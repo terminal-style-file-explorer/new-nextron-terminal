@@ -18,19 +18,19 @@ type User = {
 };
 
 export const commands = [
-  { cmd: "cls", desc: "clear the terminal", tab: 8 },
+  { cmd: "cls", desc: "clear the terminal", tab: 10 },
   { cmd: "echo", desc: "print out anything", tab: 9 },
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
  // { cmd: "pwd", desc: "print current working directory", tab: 10 },
   { cmd: "themes", desc: "check available themes", tab: 7 },
-  { cmd: "adduser", desc: "create an account", tab: 8 },
-  { cmd: "su", desc: "change user", tab: 5 },
-  { cmd: "cd", desc: "change directory", tab: 8 },
-  { cmd: "dir", desc: "list directory contents", tab: 6 },
-  { cmd: "note", desc: "enter clue book", tab: 5 },
-  { cmd: "mail", desc: "enter mail", tab: 5 },
-  { cmd: "options", desc: "check available options", tab: 7 },
+  { cmd: "adduser", desc: "create an account", tab: 6 },
+  { cmd: "su", desc: "change user", tab: 11 },
+  { cmd: "cd", desc: "change directory", tab: 11 },
+  { cmd: "dir", desc: "list directory contents", tab: 10 },
+  { cmd: "note", desc: "enter clue book", tab: 9 },
+  { cmd: "mail", desc: "enter mail", tab: 9 },
+  { cmd: "options", desc: "check available options", tab: 6 },
 
 ];
 type Term = {
