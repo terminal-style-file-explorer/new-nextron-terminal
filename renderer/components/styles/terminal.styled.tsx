@@ -8,6 +8,8 @@ export const Wrapper = styled.div`
   flex-direction: column-reverse;
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
+
+  
 `;
 
 export const CmdNotFound = styled.div`
@@ -50,4 +52,9 @@ export const Input = styled.input`
 
 export const Hints = styled.span`
   margin-right: 0.875rem;
+`;
+
+
+export const User = styled.span`
+  color: ${({ theme }) => theme.colors?.secondary};
 `;

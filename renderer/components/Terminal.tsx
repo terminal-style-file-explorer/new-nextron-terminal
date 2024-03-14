@@ -5,6 +5,7 @@ import {
   Form,
   Hints,
   Input,
+  User,
   Wrapper,
 } from './styles/terminal.styled';
 import React, { useCallback, useEffect, createContext } from 'react'
@@ -139,7 +140,9 @@ export default function HomePage() {
   return (
     <Wrapper ref={containerRef} className=''>
       <Form onSubmit={handleSubmit} className='flex'>
-        <label>{user.name ? user.name + "@:  " : "user" + "@:   "}</label>
+        <label>
+          <User>{user.name ? user.name + "@:  " : "user" + "@:   "}</User>
+        </label>
         <Input title="terminal-input " className='w-full flex-1'
           type="text"
           id='terminal-input'
@@ -164,7 +167,8 @@ export default function HomePage() {
           return (
             <div key={_.uniqueId(`${cmdH}_`)}>
               <div key={index}>
-                {userHistory[userHistory.length - 1]}@: {cmdH}
+                <User> {userHistory[userHistory.length - 1]}</User>
+                <span>@: {cmdH}</span>
               </div>
               {validCommand ? (
                 <termContext.Provider value={contextValue}>

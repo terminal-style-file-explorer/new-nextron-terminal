@@ -14,3 +14,6 @@ const Output: React.FC<Props> = ({ index, cmd }) => {
         </div>
     )
 }
+
+
+export default Output;
