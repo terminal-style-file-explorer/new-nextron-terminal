@@ -7,14 +7,43 @@ import {
   Input,
   Wrapper,
 } from './styles/terminal.styled';
-import React, { useCallback, useEffect } from 'react'
-
+import React, { useCallback, useEffect, createContext } from 'react'
+import _ from "lodash";
+import { Output } from './Output';
 type User = {
   name: string;
   password: string;
   auth: number;
 };
 
+export const commands = [
+  { cmd: "cls", desc: "clear the terminal", tab: 8 },
+  { cmd: "echo", desc: "print out anything", tab: 9 },
+  { cmd: "help", desc: "check available commands", tab: 9 },
+  { cmd: "history", desc: "view command history", tab: 6 },
+  { cmd: "pwd", desc: "print current working directory", tab: 10 },
+  { cmd: "themes", desc: "check available themes", tab: 7 },
+  { cmd: "adduser", desc: "create an account", tab: 8 },
+  { cmd: "su", desc: "change user", tab: 5 },
+  { cmd: "cd", desc: "change directory", tab: 8 },
+  { cmd: "dir", desc: "list directory contents", tab: 6 },
+  { cmd: "note", desc: "enter clue book", tab: 5 },
+  { cmd: "mail", desc: "enter mail", tab: 5 },
+  { cmd: "options", desc: "check available options", tab: 7 },
+
+];
+type Term = {
+  arg: string[];
+  history: string[];
+  index: number;
+  clearHistory?: () => void;
+};
+
+export const termContext = createContext<Term>({
+  arg: [],
+  history: [],
+  index: 0,
+});
 
 export default function HomePage() {
   const Router = useRouter();
@@ -26,6 +55,7 @@ export default function HomePage() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hints, setHints] = React.useState<string[]>([]);
+  const [event, setEvent] = React.useState([]);
   /*   React.useEffect(() => {
       if (!localStorage.getItem('user')) {
         Router.push('/login')
@@ -122,11 +152,43 @@ export default function HomePage() {
         />
       </Form>
       <div id='history' className=''>
-        {cmdHistory.map((item, index) => (
-          <div key={index}>{userHistory[userHistory.length - 1]}@: {item}</div>
-        ))}
+        {cmdHistory.map((cmdH, index) => {
+          const commandArray = _.split(_.trim(cmdH), " ");
+          const validCommand = _.find(commands, { cmd: commandArray[0] });
+          const contextValue = {
+            arg: _.drop(commandArray),
+            history: cmdHistory,
+            index,
+            clearHistory,
+          };
+          return (
+            <div key={_.uniqueId(`${cmdH}_`)}>
+              <div key={index}>
+                {userHistory[userHistory.length - 1]}@: {cmdH}
+              </div>
+              {validCommand ? (
+                <termContext.Provider value={contextValue}>
+                  <Output index={index} cmd={commandArray[0]} />
+                </termContext.Provider>
+              ) : cmdH === "" ? (
+                <Empty />
+              ) : (
+                <CmdNotFound data-testid={`not-found-${index}`}>
+                  command not found: {cmdH}
+                </CmdNotFound>
+              )}
+            </div>
+          );
+        })}
       </div>
-
+      <hr />
+      <div className='flex'>
+        <span className=''>Hints:</span>
+        {event.map((e, index) => {
+          return <span key={index}>{e}</span>
+        }
+        )}
+      </div>
     </Wrapper>
 
 
