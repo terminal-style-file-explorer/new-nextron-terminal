@@ -1,75 +1,67 @@
-import { useRouter } from 'next/router';
+import { createContext, useEffect, useState } from "react";
+import { DefaultTheme, ThemeProvider } from "styled-components";
+import { useTheme } from "../hooks/useTheme";
+import GlobalStyle from "../components/styles/GlobalStyle";
+import Terminal from "../components/terminal";
 
-import React, { useCallback } from 'react'
+export const themeContext = createContext<
+  ((switchTheme: DefaultTheme) => void) | null
+>(null);
 
-type User = {
-  name: string;
-  password: string;
-  auth: number;
-};
-
-
-export default function HomePage() {
-  const Router = useRouter();
-  const [user, setUser] = React.useState<User>({ name: '', password: '', auth: 0 });
-  const [history, setHistory] = React.useState([])
-  const [inputValue, setInputValue] = React.useState('')
-  const [pointer, setPointer] = React.useState(-1)
-  const [userHistory, setUserHistory] = React.useState([])
-
-  /*   React.useEffect(() => {
-      if (!localStorage.getItem('user')) {
-        Router.push('/login')
-      }
-    }) */
-
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+function App() {
+    // themes
+    const { theme, themeLoaded, setMode } = useTheme();
+    const [selectedTheme, setSelectedTheme] = useState(theme);
+  
+    // Disable browser's default behavior
+    // to prevent the page go up when Up Arrow is pressed
+    useEffect(() => {
+      window.addEventListener(
+        "keydown",
+        e => {
+          ["ArrowUp", "ArrowDown"].indexOf(e.code) > -1 && e.preventDefault();
+        },
+        false
+      );
+    }, []);
+  
+    useEffect(() => {
+      setSelectedTheme(theme);
+    }, [themeLoaded]);
+  
+    // Update meta tag colors when switching themes
+    useEffect(() => {
+      const themeColor = theme.colors?.body;
+  
+      const metaThemeColor = document.querySelector("meta[name='theme-color']");
+      const maskIcon = document.querySelector("link[rel='mask-icon']");
+      const metaMsTileColor = document.querySelector(
+        "meta[name='msapplication-TileColor']"
+      );
+  
+      metaThemeColor && metaThemeColor.setAttribute("content", themeColor);
+      metaMsTileColor && metaMsTileColor.setAttribute("content", themeColor);
+      maskIcon && maskIcon.setAttribute("color", themeColor);
+    }, [selectedTheme]);
+  
+    const themeSwitcher = (switchTheme: DefaultTheme) => {
+      setSelectedTheme(switchTheme);
+      setMode(switchTheme);
+    };
+  
+    return (
+      <>
+        {themeLoaded && (
+          <ThemeProvider theme={selectedTheme}>
+            <GlobalStyle theme={selectedTheme} />
+            <themeContext.Provider value={themeSwitcher}>
+              <Terminal />
+            </themeContext.Provider>
+          </ThemeProvider>
+        )}
+      </>
+    );
   }
-    , [inputValue]);
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // 阻止默认提交行为
-    setHistory([...history, inputValue]);
-    setUserHistory([...userHistory, user.name])
-    setInputValue('');
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Tab") {
-      e.preventDefault();
-      // setInputValue(inputValue + "  ")
-    }
-    if (e.key === "ArrowUp") {
-    }
-    if (e.key === "ArrowDown") {
-    }
-
-  }
-
-  const clearHistory = () => {
-    setHistory([])
-  }
-
-  return (
-    <>
-
-      <div id='history' className=''>
-        {history.map((item, index) => (
-          <div key={index}>{userHistory[userHistory.length - 1]}@: {item}</div>
-        ))}
-      </div>
-      <form onSubmit={handleSubmit} className='flex'>
-        <label>{user.name ? user.name : " " + "@"}</label>
-        <input title="terminal-input " className='w-full flex-1'
-          type="text"
-          id='terminal-input'
-          autoFocus
-          spellCheck="false"
-          value={inputValue}
-          onKeyDown={handleKeyDown}
-          onChange={handleChange}
-        />
-      </form>
-    </>
-  )
-}
+  
+  export default App;
+  
