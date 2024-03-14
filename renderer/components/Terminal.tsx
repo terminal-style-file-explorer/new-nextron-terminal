@@ -22,7 +22,7 @@ export const commands = [
   { cmd: "echo", desc: "print out anything", tab: 9 },
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
- // { cmd: "pwd", desc: "print current working directory", tab: 10 },
+  // { cmd: "pwd", desc: "print current working directory", tab: 10 },
   { cmd: "themes", desc: "check available themes", tab: 7 },
   { cmd: "adduser", desc: "create an account", tab: 6 },
   { cmd: "su", desc: "change user", tab: 11 },
@@ -35,14 +35,14 @@ export const commands = [
 ];
 type Term = {
   arg: string[];
-  history: string[];
+  CmdHistory: string[];
   index: number;
   clearHistory?: () => void;
 };
 
 export const termContext = createContext<Term>({
   arg: [],
-  history: [],
+  CmdHistory: [],
   index: 0,
 });
 
@@ -83,9 +83,18 @@ export default function HomePage() {
     setInputValue('');
     setHints([]);
     setPointer(-1);
+    if (inputValue.trim() === "cls" && inputValue.trim().length === 3) {
+      clearHistory(); // 只有输入 cls 的时候才清理屏幕
+    } else {
+      setCmdHistory([...cmdHistory, inputValue]); // 其他情况只添加命令到历史记录中
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const ctrlI = e.ctrlKey && e.key.toLowerCase() === "i";
+    const ctrlL = e.ctrlKey && e.key.toLowerCase() === "l";
+
+
     if (e.key === "Tab") {
       e.preventDefault();
       // setInputValue(inputValue + "  ")
@@ -160,7 +169,7 @@ export default function HomePage() {
           const validCommand = _.find(commands, { cmd: commandArray[0] });
           const contextValue = {
             arg: _.drop(commandArray),
-            history: cmdHistory,
+            CmdHistory: cmdHistory,
             index,
             clearHistory,
           };

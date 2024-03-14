@@ -3,7 +3,7 @@ import { termContext } from "./Terminal";
 import { UsageDiv,OutputContainer } from "./styles/outout.styled";
 import {AddUser} from "../components/commands/AddUser"
 import {Cd} from "../components/commands/Cd"
-import {Cls} from "../components/commands/Cls"
+import {Clear} from "../components/commands/Cls"
 import { Dir } from "../components/commands/Dir";
 import { Echo } from "../components/commands/Echo";
 import { Help } from "../components/commands/Help";
@@ -31,7 +31,7 @@ type Props = {
             {
                 {
                     addUser: <AddUser />,
-                    cls: <Cls />,
+                    cls: <Clear />,
                     cd: <Cd />,
                     dir: <Dir />,
                     echo: <Echo />,
