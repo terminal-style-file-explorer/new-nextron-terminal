@@ -22,7 +22,7 @@ export const commands = [
   { cmd: "echo", desc: "print out anything", tab: 9 },
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
-  { cmd: "pwd", desc: "print current working directory", tab: 10 },
+ // { cmd: "pwd", desc: "print current working directory", tab: 10 },
   { cmd: "themes", desc: "check available themes", tab: 7 },
   { cmd: "adduser", desc: "create an account", tab: 8 },
   { cmd: "su", desc: "change user", tab: 5 },
