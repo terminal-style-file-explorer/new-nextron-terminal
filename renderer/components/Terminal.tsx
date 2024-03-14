@@ -16,8 +16,13 @@ type User = {
   password: string;
   auth: number;
 };
+type Command = {
+  cmd: string;
+  desc: string;
+  tab: number;
+}[];
 
-export const commands = [
+export const commands: Command = [
   { cmd: "cls", desc: "clear the terminal", tab: 10 },
   { cmd: "echo", desc: "print out anything", tab: 9 },
   { cmd: "help", desc: "check available commands", tab: 9 },
@@ -78,16 +83,13 @@ export default function HomePage() {
     , [inputValue]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 阻止默认提交行为
-    setCmdHistory([...cmdHistory, inputValue]);
+   // setCmdHistory([...cmdHistory, inputValue]);
     setUserHistory([...userHistory, user.name])
+    setCmdHistory([...cmdHistory, inputValue]);
     setInputValue('');
     setHints([]);
     setPointer(-1);
-    if (inputValue.trim() === "cls" && inputValue.trim().length === 3) {
-      clearHistory(); // 只有输入 cls 的时候才清理屏幕
-    } else {
-      setCmdHistory([...cmdHistory, inputValue]); // 其他情况只添加命令到历史记录中
-    }
+
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

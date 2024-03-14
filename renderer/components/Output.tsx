@@ -23,7 +23,7 @@ type Props = {
 
  export const Output: React.FC<Props> = ({ index, cmd }) => {
     const { arg } = useContext(termContext);
-    const specialCmds = ["themes"]
+    const specialCmds = ["themes","mail"]
     if (specialCmds.includes(cmd) && arg.length > 0)
         return <UsageDiv data-testid="usage-output">Usage: {cmd}</UsageDiv>;
     return (
