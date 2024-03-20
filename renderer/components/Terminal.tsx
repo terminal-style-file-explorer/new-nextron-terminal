@@ -11,6 +11,7 @@ import {
 import React, { useCallback, useEffect, createContext } from 'react'
 import _ from "lodash";
 import { Output } from './Output';
+import { SetResult } from './SetResult';
 type User = {
   name: string;
   password: string;
@@ -43,12 +44,14 @@ type Term = {
   CmdHistory: string[];
   index: number;
   clearHistory?: () => void;
+  resultHistory?: string[];
 };
 
 export const termContext = createContext<Term>({
   arg: [],
   CmdHistory: [],
   index: 0,
+  resultHistory: [],
 });
 
 export default function HomePage() {
@@ -62,6 +65,7 @@ export default function HomePage() {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hints, setHints] = React.useState<string[]>([]);
   const [event, setEvent] = React.useState([]);
+  const [resultHistory, setResultHistory] = React.useState<string[]>([]);
   /*   React.useEffect(() => {
       if (!localStorage.getItem('user')) {
         Router.push('/login')
@@ -83,9 +87,10 @@ export default function HomePage() {
     , [inputValue]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 阻止默认提交行为
-   // setCmdHistory([...cmdHistory, inputValue]);
+    // setCmdHistory([...cmdHistory, inputValue]);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
+    SetResult(inputValue, resultHistory, setResultHistory);
     setInputValue('');
     setHints([]);
     setPointer(-1);
@@ -178,20 +183,14 @@ export default function HomePage() {
           return (
             <div key={_.uniqueId(`${cmdH}_`)}>
               <div key={index}>
-                <User> {userHistory[userHistory.length - 1]}</User>
-                <span>@: {cmdH}</span>
+                <div id='terminal-info'>
+                  <User> {userHistory[userHistory.length - 1]}</User>
+                  <span>@: {cmdH}</span>
+                </div>
+                <div id='terminal-output'>
+                  {resultHistory[index]}
+                </div>
               </div>
-              {validCommand ? (
-                <termContext.Provider value={contextValue}>
-                  <Output index={index} cmd={commandArray[0]} />
-                </termContext.Provider>
-              ) : cmdH === "" ? (
-                <Empty />
-              ) : (
-                <CmdNotFound data-testid={`not-found-${index}`}>
-                  command not found: {cmdH}
-                </CmdNotFound>
-              )}
             </div>
           );
         })}
