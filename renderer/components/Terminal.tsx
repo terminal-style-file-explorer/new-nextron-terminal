@@ -44,14 +44,12 @@ type Term = {
   CmdHistory: string[];
   index: number;
   clearHistory?: () => void;
-  resultHistory?: string[];
 };
 
 export const termContext = createContext<Term>({
   arg: [],
   CmdHistory: [],
   index: 0,
-  resultHistory: [],
 });
 
 export default function HomePage() {
@@ -59,13 +57,24 @@ export default function HomePage() {
   const [user, setUser] = React.useState<User>({ name: '', password: '', auth: 0 });
   const [cmdHistory, setCmdHistory] = React.useState([])
   const [inputValue, setInputValue] = React.useState('')
-  const [pointer, setPointer] = React.useState(-1)
+  const [pointer, setPointer] = React.useState(0)
   const [userHistory, setUserHistory] = React.useState([])
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hints, setHints] = React.useState<string[]>([]);
   const [event, setEvent] = React.useState([]);
-  const [resultHistory, setResultHistory] = React.useState<string[]>([]);
+  const [resultHistory, setResultHistory] = React.useState<JSX.Element[]>([]);
+
+  React.useEffect(() => {
+    console.log('cmdH', cmdHistory);
+    console.log('userH', userHistory);
+    console.log('resultH', resultHistory);
+    resultHistory.map((e, index) => {
+      console.log('resultH', resultHistory[index]);
+    }
+    )
+  }, [cmdHistory, userHistory, resultHistory]);
+
   /*   React.useEffect(() => {
       if (!localStorage.getItem('user')) {
         Router.push('/login')
@@ -90,10 +99,10 @@ export default function HomePage() {
     // setCmdHistory([...cmdHistory, inputValue]);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
-    SetResult(inputValue, resultHistory, setResultHistory);
+    SetResult(inputValue, resultHistory, setResultHistory, clearHistory, cmdHistory);
     setInputValue('');
     setHints([]);
-    setPointer(-1);
+    setPointer(0);
 
   };
 
@@ -107,25 +116,30 @@ export default function HomePage() {
       // setInputValue(inputValue + "  ")
     }
     if (e.key === "ArrowUp") {
-      if (pointer >= cmdHistory.length) return;
-      if (pointer + 1 === cmdHistory.length) return;
-      setInputValue(cmdHistory[pointer + 1]);
-      setPointer(pointer + 1);
-      inputRef?.current?.blur();
-    }
-    if (e.key === "ArrowDown") {
-      if (pointer < 0) return;
-
-      if (pointer === 0) {
-        setInputValue("");
-        setPointer(-1);
-        return;
+      const newPointer = pointer - 1;
+      if (Math.abs(newPointer) <= cmdHistory.length) {
+        setInputValue(cmdHistory[cmdHistory.length + newPointer]);
+        setPointer(newPointer);
+        console.log('pointer', newPointer, 'CmdH', cmdHistory.length);
+        inputRef?.current?.blur();
       }
+    }
 
-      setInputValue(cmdHistory[pointer - 1]);
-      setPointer(prevState => prevState - 1);
+
+    if (e.key === "ArrowDown") {
+      if (pointer >= -1) return;
+      const newPointer = pointer + 1;
+      setInputValue(cmdHistory[cmdHistory.length + newPointer]);
+      setPointer(newPointer);
+      console.log('pointer', newPointer);
       inputRef?.current?.blur();
     }
+
+
+    if (ctrlL) {
+      setResultHistory([]);
+    }
+
 
   }
 
@@ -141,6 +155,7 @@ export default function HomePage() {
   const clearHistory = () => {
     setCmdHistory([]);
     setUserHistory([]);
+    setResultHistory([]);
   }
 
   const handleDivClick = () => {
@@ -155,6 +170,7 @@ export default function HomePage() {
 
   return (
     <Wrapper ref={containerRef} className=''>
+      {/**  <Hint /> */}
       <Form onSubmit={handleSubmit} className='flex'>
         <label>
           <User>{user.name ? user.name + "@:  " : "user" + "@:   "}</User>
@@ -172,14 +188,6 @@ export default function HomePage() {
       </Form>
       <div id='history' className=''>
         {cmdHistory.map((cmdH, index) => {
-          const commandArray = _.split(_.trim(cmdH), " ");
-          const validCommand = _.find(commands, { cmd: commandArray[0] });
-          const contextValue = {
-            arg: _.drop(commandArray),
-            CmdHistory: cmdHistory,
-            index,
-            clearHistory,
-          };
           return (
             <div key={_.uniqueId(`${cmdH}_`)}>
               <div key={index}>
