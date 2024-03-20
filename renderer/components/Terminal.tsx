@@ -60,6 +60,7 @@ export default function HomePage() {
   const [inputValue, setInputValue] = React.useState('')
   const [pointer, setPointer] = React.useState(-1)
   const [userHistory, setUserHistory] = React.useState([])
+  const [resultHistory, setResultHistory] = React.useState([])
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hints, setHints] = React.useState<string[]>([]);
@@ -92,6 +93,7 @@ export default function HomePage() {
     console.log("inputValueWhenHandleSubmit= ",inputValue);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
+    setResultHistory([...resultHistory, inputValue]);
     setInputValue('');
     setHints([]);
     setPointer(-1);
@@ -143,6 +145,7 @@ export default function HomePage() {
   const clearHistory = () => {
     setCmdHistory([]);
     setUserHistory([]);
+    setResultHistory([]);
   }
 
   const handleDivClick = () => {
@@ -156,7 +159,9 @@ export default function HomePage() {
   }, [containerRef]);
 
   return (
+
     <Wrapper ref={containerRef} className=''>
+      {/**  <Hints> */}
       <Form onSubmit={handleSubmit} className='flex'>
         <label>
           <User>{user.name ? user.name : "user"}</User>
@@ -186,20 +191,14 @@ export default function HomePage() {
           return (
             <div key={_.uniqueId(`${cmdH}_`)}>
               <div key={index}>
+                <div id='userInfo'>
                 <User> {userHistory[userHistory.length - 1]}</User>
                 <span>@: {cmdH}</span>
+                </div>
+                <div id='result'>
+                  {resultHistory[index]}
+                </div>
               </div>
-              {validCommand ? (
-                <termContext.Provider value={contextValue}>
-                  <Output index={index} cmd={commandArray[0]} />
-                </termContext.Provider>
-              ) : cmdH === "" ? (
-                <Empty />
-              ) : (
-                <CmdNotFound data-testid={`not-found-${index}`}>
-                  command not found: {cmdH}
-                </CmdNotFound>
-              )}
             </div>
           );
         })}
