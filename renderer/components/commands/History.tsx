@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import _ from "lodash";
 import { Wrapper } from "../../components/styles/outout.styled";
 import { termContext } from "../Terminal";

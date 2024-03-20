@@ -43,12 +43,14 @@ type Term = {
   CmdHistory: string[];
   index: number;
   clearHistory?: () => void;
+  resultHistory?: string[];
 };
 
 export const termContext = createContext<Term>({
   arg: [],
   CmdHistory: [],
   index: 0,
+  resultHistory: [],
 });
 
 export default function HomePage() {
@@ -61,6 +63,7 @@ export default function HomePage() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hints, setHints] = React.useState<string[]>([]);
+  //传递新消息，如新邮件等
   const [event, setEvent] = React.useState([]);
   /*   React.useEffect(() => {
       if (!localStorage.getItem('user')) {
@@ -68,6 +71,7 @@ export default function HomePage() {
       }
     }) */
 
+    //因为没有做后端，所以这里用localStorage模拟用户登录
   React.useEffect(() => {
     if (!localStorage.getItem('user')) {
       setUser({ name: 'user', password: '', auth: 0 })
@@ -75,6 +79,7 @@ export default function HomePage() {
     else {
       setUser(JSON.parse(localStorage.getItem('user')))
     }
+
   }
     , []);
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,12 +88,14 @@ export default function HomePage() {
     , [inputValue]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 阻止默认提交行为
-   // setCmdHistory([...cmdHistory, inputValue]);
+    // setCmdHistory([...cmdHistory, inputValue]);
+    console.log("inputValueWhenHandleSubmit= ",inputValue);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
     setInputValue('');
     setHints([]);
     setPointer(-1);
+    console.log("cmdHistory", cmdHistory.toString());
 
   };
 
@@ -152,7 +159,8 @@ export default function HomePage() {
     <Wrapper ref={containerRef} className=''>
       <Form onSubmit={handleSubmit} className='flex'>
         <label>
-          <User>{user.name ? user.name + "@:  " : "user" + "@:   "}</User>
+          <User>{user.name ? user.name : "user"}</User>
+          <span>@:  </span>
         </label>
         <Input title="terminal-input " className='w-full flex-1'
           type="text"
