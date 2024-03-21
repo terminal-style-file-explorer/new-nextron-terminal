@@ -23,11 +23,9 @@ export const generateTabs = (num = 0): string => {
  * @returns {boolean} redirect - true | false
  */
 export const checkThemeSwitch = (
-  rerender: boolean,
   currentCommand: string[],
   themes: string[]
 ): boolean =>
-  rerender && // is submitted
   currentCommand[0] === "themes" && // current command starts with 'themes'
   currentCommand[1] === "set" && // first arg is 'set'
   currentCommand.length > 1 && // current command has arg

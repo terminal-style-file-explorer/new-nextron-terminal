@@ -9,6 +9,7 @@ import { Help } from "./commands2/Help";
 import { History } from "./commands2/History";
 import { checkThemeSwitch } from "../utils/funcs";
 import theme from '../components/styles/themes'
+import { ThemesInvalid } from "./commands2/Themes";
 const myTheme = _.keys(theme);
 
 type Command = {
@@ -34,7 +35,7 @@ export const commands: Command = [
 
 ];
 
-export function SetResult(input: string, resultHistory: any, setResuleHistory: React.Dispatch<any>, clearHistory,CmdHistory: string[]) {
+export function SetResult(input: string, resultHistory: any, setResuleHistory: React.Dispatch<any>, clearHistory,CmdHistory: string[],setThemeByResult) {
 
     //处理input
     const commandArray = _.split(_.trim(input), ' ');
@@ -46,6 +47,9 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
     let historytoReturn = <Empty />;
     const setHistorytoReturn = (Element: JSX.Element) => {
         historytoReturn = Element;
+    }
+    const themeToReturn = (theme: string) => {
+        setThemeByResult(theme);
     }
 
     if (input === "") {
@@ -59,6 +63,7 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
                 }
                 else{
                     Cls(arg, clearHistory, setHistorytoReturn);
+                    setResuleHistory([...resultHistory, historytoReturn])
                 }
 
                 break;
@@ -66,11 +71,23 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
                 break;
             case "help":
                 Help(setHistorytoReturn);
+                setResuleHistory([...resultHistory, historytoReturn])
                 break;
             case "history":
                 History(setHistorytoReturn,CmdHistory);
+                setResuleHistory([...resultHistory, historytoReturn])
                 break;
             case "themes":
+                if(checkThemeSwitch(commandArray,myTheme)){
+                     //themeSwitcher([theme[commandArray[2]]]);
+                     console.log("theme switcher");
+                     themeToReturn(commandArray[2]);
+                }
+                else{
+                    console.log("theme invalid");
+                    ThemesInvalid(setHistorytoReturn , myTheme);
+                    setResuleHistory([...resultHistory, historytoReturn])
+                }
                 break;
             case "adduser":
                 break;
@@ -94,6 +111,7 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
         setHistorytoReturn(<CmdNotFound >
             command not found: {input}
         </CmdNotFound>)
+        setResuleHistory([...resultHistory, historytoReturn])
     }
 
 

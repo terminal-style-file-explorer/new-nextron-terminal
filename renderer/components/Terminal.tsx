@@ -24,6 +24,9 @@ type Command = {
   tab: number;
 }[];
 
+
+import theme from './styles/themes';
+
 export const commands: Command = [
   { cmd: "cls", desc: "clear the terminal", tab: 10 },
   { cmd: "echo", desc: "print out anything", tab: 9 },
@@ -66,15 +69,20 @@ export default function HomePage() {
   const [event, setEvent] = React.useState([]);
   const [resultHistory, setResultHistory] = React.useState<JSX.Element[]>([]);
   const themeSwitcher = React.useContext(themeContext);
+  const [ThemeByResult, setThemeByResult] = React.useState("dark");
+
+
+
+  
+  React.useEffect(() => {
+    console.log('ThemeByResult', ThemeByResult);
+    themeSwitcher(theme[ThemeByResult]);
+  },[ThemeByResult] );
 
   React.useEffect(() => {
     console.log('cmdH', cmdHistory);
     console.log('userH', userHistory);
     console.log('resultH', resultHistory);
-    resultHistory.map((e, index) => {
-      console.log('resultH', resultHistory[index]);
-    }
-    )
   }, [cmdHistory, userHistory, resultHistory]);
 
   /*   React.useEffect(() => {
@@ -101,7 +109,7 @@ export default function HomePage() {
     // setCmdHistory([...cmdHistory, inputValue]);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
-    SetResult(inputValue, resultHistory, setResultHistory, clearHistory, cmdHistory);
+    SetResult(inputValue, resultHistory, setResultHistory, clearHistory, cmdHistory,setThemeByResult);
     setInputValue('');
     setHints([]);
     setPointer(0);
