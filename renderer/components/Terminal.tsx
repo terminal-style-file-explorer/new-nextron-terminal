@@ -12,6 +12,7 @@ import React, { useCallback, useEffect, createContext } from 'react'
 import _ from "lodash";
 import { Output } from './Output';
 import { SetResult } from './SetResult';
+import { themeContext } from '../pages/home';
 type User = {
   name: string;
   password: string;
@@ -64,6 +65,7 @@ export default function HomePage() {
   const [hints, setHints] = React.useState<string[]>([]);
   const [event, setEvent] = React.useState([]);
   const [resultHistory, setResultHistory] = React.useState<JSX.Element[]>([]);
+  const themeSwitcher = React.useContext(themeContext);
 
   React.useEffect(() => {
     console.log('cmdH', cmdHistory);

@@ -7,6 +7,9 @@ import { CmdNotFound, Empty } from "./styles/terminal.styled";
 import { Cls } from './commands2/Cls';
 import { Help } from "./commands2/Help";
 import { History } from "./commands2/History";
+import { checkThemeSwitch } from "../utils/funcs";
+import theme from '../components/styles/themes'
+const myTheme = _.keys(theme);
 
 type Command = {
     cmd: string;
@@ -111,6 +114,7 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
      </div>;
      */
     //接下来处理input
-    setResuleHistory([...resultHistory, historytoReturn])
+   
+   // setResuleHistory([...resultHistory, historytoReturn])
 
 }
