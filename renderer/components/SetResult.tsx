@@ -10,7 +10,9 @@ import { History } from "./commands2/History";
 import { checkThemeSwitch } from "../utils/funcs";
 import theme from '../components/styles/themes'
 import { ThemesInvalid } from "./commands2/Themes";
+import { Router } from "next/router";
 const myTheme = _.keys(theme);
+import { useRouter } from "next/router";
 
 type Command = {
     cmd: string;
@@ -35,7 +37,13 @@ export const commands: Command = [
 
 ];
 
-export function SetResult(input: string, resultHistory: any, setResuleHistory: React.Dispatch<any>, clearHistory,CmdHistory: string[],setThemeByResult) {
+export function SetResult(
+    input: string,
+    resultHistory: any,
+    setResuleHistory: React.Dispatch<any>,
+    clearHistory, CmdHistory: string[],
+    setThemeByResult,
+    handleRouter) {
 
     //处理input
     const commandArray = _.split(_.trim(input), ' ');
@@ -44,6 +52,7 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
     const arg = _.drop(commandArray);
     //呼出对应的功能/输出
     const specialCmds = ["themes", "mail"];
+    const router = useRouter();
     let historytoReturn = <Empty />;
     const setHistorytoReturn = (Element: JSX.Element) => {
         historytoReturn = Element;
@@ -58,14 +67,13 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
     else if (validCommand) {
         switch (command) {
             case "cls":
-                if(arg.length === 0){
+                if (arg.length === 0) {
                     clearHistory();
                 }
-                else{
+                else {
                     Cls(arg, clearHistory, setHistorytoReturn);
                     setResuleHistory([...resultHistory, historytoReturn])
                 }
-
                 break;
             case "echo":
                 break;
@@ -74,18 +82,18 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
                 setResuleHistory([...resultHistory, historytoReturn])
                 break;
             case "history":
-                History(setHistorytoReturn,CmdHistory);
+                History(setHistorytoReturn, CmdHistory);
                 setResuleHistory([...resultHistory, historytoReturn])
                 break;
             case "themes":
-                if(checkThemeSwitch(commandArray,myTheme)){
-                     //themeSwitcher([theme[commandArray[2]]]);
-                     console.log("theme switcher");
-                     themeToReturn(commandArray[2]);
+                if (checkThemeSwitch(commandArray, myTheme)) {
+                    //themeSwitcher([theme[commandArray[2]]]);
+                    console.log("theme switcher");
+                    themeToReturn(commandArray[2]);
                 }
-                else{
+                else {
                     console.log("theme invalid");
-                    ThemesInvalid(setHistorytoReturn , myTheme);
+                    ThemesInvalid(setHistorytoReturn, myTheme);
                     setResuleHistory([...resultHistory, historytoReturn])
                 }
                 break;
@@ -98,8 +106,12 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
             case "dir":
                 break;
             case "note":
+
                 break;
             case "mail":
+                //router.push('/mail'); 应该在terminal里面实现，然后导入function进来 如 pushRouter('mail')
+                //应检查是否有参数
+                handleRouter('/mail');
                 break;
             case "options":
                 break;
@@ -132,7 +144,7 @@ export function SetResult(input: string, resultHistory: any, setResuleHistory: R
      </div>;
      */
     //接下来处理input
-   
-   // setResuleHistory([...resultHistory, historytoReturn])
+
+    // setResuleHistory([...resultHistory, historytoReturn])
 
 }

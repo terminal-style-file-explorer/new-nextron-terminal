@@ -70,14 +70,19 @@ export default function HomePage() {
   const [resultHistory, setResultHistory] = React.useState<JSX.Element[]>([]);
   const themeSwitcher = React.useContext(themeContext);
   const [ThemeByResult, setThemeByResult] = React.useState("dark");
+  const router = useRouter();
+
+
+  const handleRouter = (path: string) => {
+    router.push(path);
+  }
 
 
 
-  
   React.useEffect(() => {
     console.log('ThemeByResult', ThemeByResult);
     themeSwitcher(theme[ThemeByResult]);
-  },[ThemeByResult] );
+  }, [ThemeByResult]);
 
   React.useEffect(() => {
     console.log('cmdH', cmdHistory);
@@ -109,7 +114,7 @@ export default function HomePage() {
     // setCmdHistory([...cmdHistory, inputValue]);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
-    SetResult(inputValue, resultHistory, setResultHistory, clearHistory, cmdHistory,setThemeByResult);
+    SetResult(inputValue, resultHistory, setResultHistory, clearHistory, cmdHistory, setThemeByResult,handleRouter);
     setInputValue('');
     setHints([]);
     setPointer(0);
