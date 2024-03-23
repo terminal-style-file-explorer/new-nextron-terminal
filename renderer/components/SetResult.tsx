@@ -13,6 +13,8 @@ import { ThemesInvalid } from "./commands2/Themes";
 import { Router } from "next/router";
 const myTheme = _.keys(theme);
 import { useRouter } from "next/router";
+import { UsageDiv } from "./styles/outout.styled";
+import { Cmd } from "./styles/help.styled";
 
 type Command = {
     cmd: string;
@@ -44,7 +46,6 @@ export function SetResult(
     clearHistory, CmdHistory: string[],
     setThemeByResult,
     handleRouter) {
-
     //处理input
     const commandArray = _.split(_.trim(input), ' ');
     const validCommand = _.find(commands, { cmd: commandArray[0] });
@@ -111,7 +112,13 @@ export function SetResult(
             case "mail":
                 //router.push('/mail'); 应该在terminal里面实现，然后导入function进来 如 pushRouter('mail')
                 //应检查是否有参数
-                handleRouter('/mail');
+                if (arg.length === 0) {
+                    handleRouter('/mail');
+                } else {
+                    setHistorytoReturn(<UsageDiv>Would you like to input: <Cmd>cls</Cmd></UsageDiv>)
+                    setResuleHistory([...resultHistory, historytoReturn])
+                }
+
                 break;
             case "options":
                 break;
