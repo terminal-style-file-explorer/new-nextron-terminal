@@ -53,13 +53,15 @@ export function SetResult(
     const arg = _.drop(commandArray);
     //呼出对应的功能/输出
     const specialCmds = ["themes", "mail"];
-    const router = useRouter();
     let historytoReturn = <Empty />;
     const setHistorytoReturn = (Element: JSX.Element) => {
         historytoReturn = Element;
     }
     const themeToReturn = (theme: string) => {
-        setThemeByResult(theme);
+        setThemeByResult(theme)
+    }
+    const notFinished = () => {
+        return <div>Not finished</div>
     }
 
     if (input === "") {
@@ -99,15 +101,19 @@ export function SetResult(
                 }
                 break;
             case "adduser":
+                setResuleHistory([...resultHistory, notFinished()])
                 break;
             case "su":
+                setResuleHistory([...resultHistory, notFinished()])
                 break;
             case "cd":
+                setResuleHistory([...resultHistory, notFinished()])
                 break;
             case "dir":
+                setResuleHistory([...resultHistory, notFinished()])
                 break;
             case "note":
-
+                setResuleHistory([...resultHistory, notFinished()])
                 break;
             case "mail":
                 //router.push('/mail'); 应该在terminal里面实现，然后导入function进来 如 pushRouter('mail')
@@ -121,6 +127,7 @@ export function SetResult(
 
                 break;
             case "options":
+                setResuleHistory([...resultHistory, notFinished()])
                 break;
             default:
                 break;
