@@ -114,7 +114,7 @@ export default function HomePage() {
     // setCmdHistory([...cmdHistory, inputValue]);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
-    SetResult(inputValue, resultHistory, setResultHistory, clearHistory, cmdHistory, setThemeByResult,handleRouter);
+    SetResult(inputValue, resultHistory, setResultHistory, clearHistory, cmdHistory, setThemeByResult, handleRouter);
     setInputValue('');
     setHints([]);
     setPointer(0);
@@ -152,7 +152,7 @@ export default function HomePage() {
 
 
     if (ctrlL) {
-      setResultHistory([]);
+      router.push('/login')
     }
 
 

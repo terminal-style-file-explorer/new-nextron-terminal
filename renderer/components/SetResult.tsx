@@ -101,6 +101,7 @@ export function SetResult(
                 }
                 break;
             case "adduser":
+                useRouter().push('/login');
                 setResuleHistory([...resultHistory, notFinished()])
                 break;
             case "su":
