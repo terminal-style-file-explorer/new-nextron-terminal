@@ -90,11 +90,11 @@ export default function HomePage() {
     console.log('resultH', resultHistory);
   }, [cmdHistory, userHistory, resultHistory]);
 
-  /*   React.useEffect(() => {
-      if (!localStorage.getItem('user')) {
-        Router.push('/login')
-      }
-    }) */
+  React.useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      Router.push('/login')
+    }
+  })
 
   React.useEffect(() => {
     if (!localStorage.getItem('user')) {
