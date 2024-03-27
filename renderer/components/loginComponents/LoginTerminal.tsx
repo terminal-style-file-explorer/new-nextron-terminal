@@ -86,6 +86,10 @@ export default function LoginTerminal() {
   }
 
 
+  const cleanHisotry = () => {
+    setCmdHistory([]);
+    setResultHistory([]);
+  }
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
