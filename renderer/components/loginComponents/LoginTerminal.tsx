@@ -2,6 +2,8 @@ import React from 'react';
 import { useEffect, useRef } from 'react';
 import _ from 'lodash';
 import { CmdNotFound, Empty, Form, Input, User, Wrapper } from '../styles/terminal.styled';
+import { setUserToLS } from '../../utils/storage';
+import { useRouter } from 'next/router';
 
 type User = {
   name: string;
@@ -28,7 +30,7 @@ export default function LoginTerminal() {
   const [resultHistory, setResultHistory] = React.useState<JSX.Element[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
-
+  const router = useRouter();
   const [user, setUser] = React.useState<User>(
     { name: 'visitor', password: '000000', auth: 0 }
   );
@@ -55,7 +57,10 @@ export default function LoginTerminal() {
           case "addUser":
             if (addUser(userToCheck)) {
               // 库中不存在对应用户名，可以新建用户
-              return <div>user added</div>
+              cleanHisotry();
+              setUser(userToCheck);
+              setUserToLS(userToCheck);
+              router.push('/home');
             }
             else {
               return <div>user already exists</div>

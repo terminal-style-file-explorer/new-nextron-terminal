@@ -13,7 +13,7 @@ import _ from "lodash";
 import { Output } from './Output';
 import { SetResult } from './SetResult';
 import { themeContext } from '../pages/home';
-type User = {
+export type User = {
   name: string;
   password: string;
   auth: number;
