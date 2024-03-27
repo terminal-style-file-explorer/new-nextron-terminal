@@ -22,6 +22,7 @@ type Command = {
 export const commands: Command = [
   { cmd: "addUser", desc: "create an account", tab: 6 },
   { cmd: "su", desc: "change user", tab: 11 },
+  { cmd: 'cls', desc: 'clear the terminal', tab: 10 }
 ];
 
 export default function LoginTerminal() {
@@ -40,7 +41,7 @@ export default function LoginTerminal() {
   }
   function addUser(user: User) {
     return true;
-  
+
   }
 
   const cmdParse = (cmd: string) => {
@@ -67,6 +68,7 @@ export default function LoginTerminal() {
             }
             break;
           case "su":
+
             if (checkUser(userToCheck)) {
               cleanHisotry();
               setUser(userToCheck);
@@ -78,6 +80,15 @@ export default function LoginTerminal() {
               return <div>please check your username or password</div>
             }
             break;
+          case "cls":
+            if (cmdArray.length === 1) {
+              cleanHisotry();
+            }
+            else {
+              return <CmdNotFound>
+                invalid command: {cmd}
+              </CmdNotFound>
+            }
         }
       }
       else {
@@ -161,6 +172,9 @@ export default function LoginTerminal() {
           );
         })}
       </div>
+      {
+        /* <Hint /> */
+      }
     </Wrapper>
   );
 }
