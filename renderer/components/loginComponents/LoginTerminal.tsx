@@ -89,6 +89,7 @@ export default function LoginTerminal() {
                 invalid command: {cmd}
               </CmdNotFound>
             }
+            break;
         }
       }
       else {

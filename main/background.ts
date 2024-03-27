@@ -1,7 +1,9 @@
 import path from 'path'
-import { app, ipcMain } from 'electron'
+import { BrowserView, app, ipcMain } from 'electron'
 import serve from 'electron-serve'
+import Store from 'electron-store'
 import { createWindow } from './helpers'
+import { fsync } from 'fs'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -11,7 +13,7 @@ if (isProd) {
   app.setPath('userData', `${app.getPath('userData')} (development)`)
 }
 
-;(async () => {
+; (async () => {
   await app.whenReady()
 
   const mainWindow = createWindow('main', {
@@ -35,6 +37,22 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
-ipcMain.on('message', async (event, arg) => {
-  event.reply('message', `${arg} World!`)
+/*
+ipcMain.on('message', (event, arg) => {
+  console.log("向主进程里发送input： ", arg)
+  event.reply('input-reply', `${arg} World!`)
 })
+*/
+ipcMain.handle('message', async (_event, arg) => {
+  console.log("向主进程里发送input： ", arg)
+  return `${arg} World!`
+})
+
+
+ipcMain.on('input', (event, arg) => {
+  console.log("input: ", arg ?? "new window")
+
+  event.reply('input-reply', `input: ${arg}`)
+
+})
+

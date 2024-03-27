@@ -1,3 +1,4 @@
+'use client';
 import { useRouter } from 'next/router';
 import {
   CmdNotFound,
@@ -23,9 +24,11 @@ type Command = {
   desc: string;
   tab: number;
 }[];
-
-
 import theme from './styles/themes';
+
+
+
+
 
 export const commands: Command = [
   { cmd: "cls", desc: "clear the terminal", tab: 10 },
@@ -73,6 +76,10 @@ export default function HomePage() {
   const router = useRouter();
 
 
+
+
+
+
   const handleRouter = (path: string) => {
     router.push(path);
   }
@@ -84,11 +91,17 @@ export default function HomePage() {
     themeSwitcher(theme[ThemeByResult]);
   }, [ThemeByResult]);
 
+
+
+
   React.useEffect(() => {
     console.log('cmdH', cmdHistory);
     console.log('userH', userHistory);
     console.log('resultH', resultHistory);
   }, [cmdHistory, userHistory, resultHistory]);
+
+
+
 
   React.useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -97,7 +110,7 @@ export default function HomePage() {
     else {
       setUser(JSON.parse(localStorage.getItem('user')))
     }
-  })
+  }, []);
   /*
     React.useEffect(() => {
       if (!localStorage.getItem('user')) {
@@ -118,12 +131,21 @@ export default function HomePage() {
     // setCmdHistory([...cmdHistory, inputValue]);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
-    SetResult(inputValue, resultHistory, setResultHistory, clearHistory, cmdHistory, setThemeByResult, handleRouter);
+    SetResult(inputValue,
+      resultHistory,
+      setResultHistory,
+      clearHistory,
+      cmdHistory,
+      setThemeByResult,
+      handleRouter
+    );
+    window.ipc.send('message', inputValue);
     setInputValue('');
     setHints([]);
     setPointer(0);
 
   };
+
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const ctrlI = e.ctrlKey && e.key.toLowerCase() === "i";
