@@ -68,11 +68,14 @@ export default function LoginTerminal() {
             break;
           case "su":
             if (checkUser(userToCheck)) {
+              cleanHisotry();
+              setUser(userToCheck);
+              setUserToLS(userToCheck);
+              router.push('/home');
               // 用户存在，可以切换用户
-              return <div>user changed</div>
             }
             else {
-              return <div>user not found</div>
+              return <div>please check your username or password</div>
             }
             break;
         }
