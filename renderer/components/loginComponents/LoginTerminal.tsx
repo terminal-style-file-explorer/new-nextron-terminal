@@ -56,7 +56,6 @@ export default function LoginTerminal() {
       }
     }
     return result();
-
   }
 
   const cmdParse = (cmd: string) => {

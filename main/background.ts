@@ -6,6 +6,16 @@ import { createWindow } from './helpers'
 import { fsync } from 'fs'
 import { isContext } from 'vm'
 
+import * as fs from 'fs';
+type User = {
+  name: string;
+  password: string;
+  auth: number;
+};
+
+
+
+
 const isProd = process.env.NODE_ENV === 'production'
 
 if (isProd) {
@@ -59,12 +69,54 @@ ipcMain.on('input', (event, arg) => {
 
 
 
-ipcMain.handle('checkUser', async (_event, arg) => {
-  console.log("checkUser: ", arg)
-  return true
-})
+const usersJsonPath = path.join(__dirname, 'images/users.json');
 
-ipcMain.handle('addUser', async (_event, arg) => {
-  console.log("addUser: ", arg)
-  return true
-})
+// 读取 users.json 文件并解析为对象
+let users = [];
+try {
+  const usersData = fs.readFileSync(usersJsonPath).toString();
+  users = JSON.parse(usersData);
+} catch (error) {
+  console.error('Error reading users.json:', error);
+}
+
+// 添加用户
+ipcMain.handle('addUser', async (_event, newUser) => {
+  console.log("addUser: ", newUser);
+  console.log("users in images", users[0]?.name);
+
+  // 检查是否存在相同用户名
+  const existingUser = users.find(user => user.name === newUser.name);
+  if (existingUser) {
+    console.log('用户名已存在');
+    return false;
+  }
+
+  // 将新用户添加到用户列表中
+  users.push(newUser);
+
+  // 将更新后的用户信息写回 JSON 文件
+  try {
+    fs.writeFileSync(usersJsonPath, JSON.stringify(users, null, 2));
+    console.log('用户添加成功');
+    return true;
+  } catch (error) {
+    console.error('Error writing users.json:', error);
+    return false;
+  }
+});
+
+// 检查用户
+ipcMain.handle('checkUser', async (_event, { name, password }) => {
+  console.log("checkUser: ", name);
+
+  // 查找用户
+  const user = users.find(user => user.name === name && user.password === password);
+  if (user) {
+    console.log('用户存在且密码正确');
+    return true;
+  }
+
+  console.log('用户不存在或密码错误');
+  return false;
+});
