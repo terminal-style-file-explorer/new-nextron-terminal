@@ -15,6 +15,9 @@ const myTheme = _.keys(theme);
 import { useRouter } from "next/router";
 import { UsageDiv } from "./styles/outout.styled";
 import { Cmd } from "./styles/help.styled";
+import { User } from "./Terminal";
+import { Su } from "./commands2/Su";
+import { setUserToLS } from "../utils/storage";
 
 type Command = {
     cmd: string;
@@ -45,7 +48,8 @@ export function SetResult(
     setResuleHistory: React.Dispatch<any>,
     clearHistory, CmdHistory: string[],
     setThemeByResult,
-    handleRouter) {
+    handleRouter,
+    setUser,) {
     //处理input
     const commandArray = _.split(_.trim(input), ' ');
     const validCommand = _.find(commands, { cmd: commandArray[0] });
@@ -64,6 +68,29 @@ export function SetResult(
         return <div>Not finished</div>
     }
 
+    function checkUser(user: User) {
+        const result = async () => {
+            try {
+                let response = await window.ipc.invoke('checkUser', user);
+                return response;
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        return result();
+    }
+    function addUser(user: User) {
+        const result = async () => {
+            try {
+                let response = await window.ipc.invoke('addUser', user);
+                return response;
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        return result();
+    }
+
     if (input === "") {
         setHistorytoReturn(<Empty />);
         setResuleHistory([...resultHistory, historytoReturn])
@@ -77,6 +104,7 @@ export function SetResult(
                 else {
                     Cls(arg, clearHistory, setHistorytoReturn);
                     setResuleHistory([...resultHistory, historytoReturn])
+
                 }
                 break;
             case "echo":
@@ -102,11 +130,31 @@ export function SetResult(
                 }
                 break;
             case "adduser":
-                useRouter().push('/login');
-                setResuleHistory([...resultHistory, notFinished()])
+                const userToAdd = { name: arg[0], password: arg[1], auth: 0 };
+                if (addUser(userToAdd)) {
+                    setHistorytoReturn(<UsageDiv> user added as {arg[0]}</UsageDiv>)
+                    setUser(userToAdd);
+                    setUserToLS(userToAdd);
+                    setResuleHistory([...resultHistory, historytoReturn])
+                }
+                else {
+                    setHistorytoReturn(<UsageDiv>user already exists</UsageDiv>)
+                    setResuleHistory([...resultHistory, historytoReturn])
+                }
                 break;
             case "su":
-                setResuleHistory([...resultHistory, notFinished()])
+                const userToCheck = { name: arg[0], password: arg[1], auth: 0 };
+                if (checkUser(userToCheck)) {
+                    setHistorytoReturn(<Empty />)
+                    setUser(userToCheck);
+                    setUserToLS(userToCheck);
+                    setResuleHistory([...resultHistory, historytoReturn])
+                }
+                else {
+                    setHistorytoReturn(<UsageDiv>please check your username or password</UsageDiv>)
+                    setResuleHistory([...resultHistory, historytoReturn])
+
+                }
                 break;
             case "cd":
                 setResuleHistory([...resultHistory, notFinished()])

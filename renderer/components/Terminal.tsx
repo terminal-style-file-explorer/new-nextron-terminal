@@ -137,7 +137,8 @@ export default function HomePage() {
       clearHistory,
       cmdHistory,
       setThemeByResult,
-      handleRouter
+      handleRouter,
+      setUser,
     );
     window.ipc.send('message', inputValue);
     setInputValue('');
