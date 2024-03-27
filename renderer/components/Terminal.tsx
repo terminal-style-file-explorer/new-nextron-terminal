@@ -94,17 +94,21 @@ export default function HomePage() {
     if (!localStorage.getItem('user')) {
       Router.push('/login')
     }
-  })
-
-  React.useEffect(() => {
-    if (!localStorage.getItem('user')) {
-      setUser({ name: 'user', password: '', auth: 0 })
-    }
     else {
       setUser(JSON.parse(localStorage.getItem('user')))
     }
-  }
-    , []);
+  })
+  /*
+    React.useEffect(() => {
+      if (!localStorage.getItem('user')) {
+        setUser({ name: 'user', password: '', auth: 0 })
+      }
+      else {
+        setUser(JSON.parse(localStorage.getItem('user')))
+      }
+    }
+      , []);
+  */
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }
