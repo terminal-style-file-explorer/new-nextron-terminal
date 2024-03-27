@@ -69,11 +69,17 @@ ipcMain.on('input', (event, arg) => {
 
 
 
-const usersJsonPath = path.join(__dirname, 'images/users.json');
+let usersJsonPath = path.join(__dirname, '/images/users.json');
+
+// 如果是开发环境，添加开发环境的路径前缀
+if (process.env.NODE_ENV !== 'production') {
+  usersJsonPath = path.join(__dirname, '../renderer/public/users.json');
+}
 
 // 读取 users.json 文件并解析为对象
 let users = [];
 try {
+  console.log("usersJsonPath: ", usersJsonPath)
   const usersData = fs.readFileSync(usersJsonPath).toString();
   users = JSON.parse(usersData);
 } catch (error) {
