@@ -35,30 +35,25 @@ export default function LoginTerminal() {
   const [user, setUser] = React.useState<User>(
     { name: 'visitor', password: '000000', auth: 0 }
   );
-  function checkUser(user: User) {
-    const result = async () => {
-      try {
-        let response = await window.ipc.invoke('checkUser', user);
-        return response;
-      } catch (err) {
-        console.log(err);
-      }
+  async function checkUser(user: User) {
+    try {
+      const response = await window.ipc.invoke('checkUser', user);
+      return response;
+    } catch (err) {
+      console.log(err);
     }
-    return result();
-  }
-  function addUser(user: User) {
-    const result = async () => {
-      try {
-        let response = await window.ipc.invoke('addUser', user);
-        return response;
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    return result();
   }
 
-  const cmdParse = (cmd: string) => {
+  async function addUser(user: User) {
+    try {
+      const response = await window.ipc.invoke('addUser', user);
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const cmdParse = async (cmd: string) => {
     let cmdArray = _.split(_.trim(cmd), ' ');
     let validCmd = _.find(commands, { cmd: cmdArray[0] });
     let currentCmd = cmdArray[0];
@@ -71,35 +66,33 @@ export default function LoginTerminal() {
         let userToCheck = { name: cmdArray[1], password: cmdArray[2], auth: 0 };
         switch (currentCmd) {
           case "adduser":
-            if (addUser(userToCheck)) {
+            const addUserResponse = await addUser(userToCheck);
+            if (addUserResponse) {
               // 库中不存在对应用户名，可以新建用户
               cleanHisotry();
               setUser(userToCheck);
               setUserToLS(userToCheck);
               router.push('/home');
-            }
-            else {
+            } else {
               return <div>user already exists</div>
             }
             break;
           case "su":
-
-            if (checkUser(userToCheck)) {
+            const checkUserResponse = await checkUser(userToCheck);
+            if (checkUserResponse) {
               cleanHisotry();
               setUser(userToCheck);
               setUserToLS(userToCheck);
               router.push('/home');
               // 用户存在，可以切换用户
-            }
-            else {
+            } else {
               return <div>please check your username or password</div>
             }
             break;
           case "cls":
             if (arg.length === 0) {
               cleanHisotry();
-            }
-            else {
+            } else {
               return <CmdNotFound>
                 invalid command: {cmd}
               </CmdNotFound>
@@ -130,12 +123,14 @@ export default function LoginTerminal() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCmdHistory([...cmdHistory, inputValue]);
-    setResultHistory([...resultHistory, cmdParse(inputValue)]);
+    const result = await cmdParse(inputValue);
+    setResultHistory([...resultHistory, result]);
     setInputValue('');
-  }
+  };
+  
 
   // For caret position at the end
   useEffect(() => {
