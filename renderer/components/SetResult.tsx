@@ -66,6 +66,7 @@ export function SetResult(
 
     if (input === "") {
         setHistorytoReturn(<Empty />);
+        setResuleHistory([...resultHistory, historytoReturn])
     }
     else if (validCommand) {
         switch (command) {
