@@ -72,6 +72,7 @@ export function SetResult(
         const result = async () => {
             try {
                 let response = await window.ipc.invoke('checkUser', user);
+                console.log('checkUser response: ', response);
                 return response;
             } catch (err) {
                 console.log(err);
@@ -83,6 +84,7 @@ export function SetResult(
         const result = async () => {
             try {
                 let response = await window.ipc.invoke('addUser', user);
+                console.log('addUser response: ', response);
                 return response;
             } catch (err) {
                 console.log(err);

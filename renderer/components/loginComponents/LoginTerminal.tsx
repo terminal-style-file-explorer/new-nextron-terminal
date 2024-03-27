@@ -20,7 +20,7 @@ type Command = {
 
 
 export const commands: Command = [
-  { cmd: "addUser", desc: "create an account", tab: 6 },
+  { cmd: "adduser", desc: "create an account", tab: 6 },
   { cmd: "su", desc: "change user", tab: 11 },
   { cmd: 'cls', desc: 'clear the terminal', tab: 10 }
 ];
@@ -62,14 +62,15 @@ export default function LoginTerminal() {
     let cmdArray = _.split(_.trim(cmd), ' ');
     let validCmd = _.find(commands, { cmd: cmdArray[0] });
     let currentCmd = cmdArray[0];
+    let arg = _.drop(cmdArray);
     if (cmd === '') {
       return <Empty />;
     }
     else if (validCmd) {
-      if (cmdArray.length === 3) {
+      if (cmdArray.length === 3 || cmdArray.length === 1) {
         let userToCheck = { name: cmdArray[1], password: cmdArray[2], auth: 0 };
         switch (currentCmd) {
-          case "addUser":
+          case "adduser":
             if (addUser(userToCheck)) {
               // 库中不存在对应用户名，可以新建用户
               cleanHisotry();
@@ -95,7 +96,7 @@ export default function LoginTerminal() {
             }
             break;
           case "cls":
-            if (cmdArray.length === 1) {
+            if (arg.length === 0) {
               cleanHisotry();
             }
             else {
