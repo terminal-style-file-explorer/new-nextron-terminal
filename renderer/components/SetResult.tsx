@@ -42,7 +42,7 @@ export const commands: Command = [
 
 ];
 
-export function SetResult(
+export async function SetResult(
     input: string,
     resultHistory: any,
     setResuleHistory: React.Dispatch<any>,
@@ -68,30 +68,23 @@ export function SetResult(
         return <div>Not finished</div>
     }
 
-    function checkUser(user: User) {
-        const result = async () => {
-            try {
-                let response = await window.ipc.invoke('checkUser', user);
-                console.log('checkUser response: ', response);
-                return response;
-            } catch (err) {
-                console.log(err);
-            }
+    async function checkUser(user: User) {
+        try {
+          const response = await window.ipc.invoke('checkUser', user);
+          return response;
+        } catch (err) {
+          console.log(err);
         }
-        return result();
-    }
-    function addUser(user: User) {
-        const result = async () => {
-            try {
-                let response = await window.ipc.invoke('addUser', user);
-                console.log('addUser response: ', response);
-                return response;
-            } catch (err) {
-                console.log(err);
-            }
+      }
+    
+      async function addUser(user: User) {
+        try {
+          const response = await window.ipc.invoke('addUser', user);
+          return response;
+        } catch (err) {
+          console.log(err);
         }
-        return result();
-    }
+      }
 
     if (input === "") {
         setHistorytoReturn(<Empty />);
@@ -133,7 +126,8 @@ export function SetResult(
                 break;
             case "adduser":
                 const userToAdd = { name: arg[0], password: arg[1], auth: 0 };
-                if (addUser(userToAdd)) {
+                const addUserResponse = await addUser(userToAdd);
+                if (addUserResponse) {
                     setHistorytoReturn(<UsageDiv> user added as {arg[0]}</UsageDiv>)
                     setUser(userToAdd);
                     setUserToLS(userToAdd);
@@ -146,7 +140,8 @@ export function SetResult(
                 break;
             case "su":
                 const userToCheck = { name: arg[0], password: arg[1], auth: 0 };
-                if (checkUser(userToCheck)) {
+                const checkUserResponse = await checkUser(userToCheck);
+                if (checkUserResponse) {
                     setHistorytoReturn(<Empty />)
                     setUser(userToCheck);
                     setUserToLS(userToCheck);
