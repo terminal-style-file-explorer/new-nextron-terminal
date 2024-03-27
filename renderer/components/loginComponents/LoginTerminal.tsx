@@ -36,11 +36,26 @@ export default function LoginTerminal() {
     { name: 'visitor', password: '000000', auth: 0 }
   );
   function checkUser(user: User) {
-    return true;
-
+    const result = async () => {
+      try {
+        let response = await window.ipc.invoke('checkUser', user);
+        return response;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    return result();
   }
   function addUser(user: User) {
-    return true;
+    const result = async () => {
+      try {
+        let response = await window.ipc.invoke('addUser', user);
+        return response;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    return result();
 
   }
 

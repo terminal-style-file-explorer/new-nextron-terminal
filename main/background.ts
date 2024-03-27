@@ -4,6 +4,7 @@ import serve from 'electron-serve'
 import Store from 'electron-store'
 import { createWindow } from './helpers'
 import { fsync } from 'fs'
+import { isContext } from 'vm'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -56,3 +57,14 @@ ipcMain.on('input', (event, arg) => {
 
 })
 
+
+
+ipcMain.handle('checkUser', async (_event, arg) => {
+  console.log("checkUser: ", arg)
+  return true
+})
+
+ipcMain.handle('addUser', async (_event, arg) => {
+  console.log("addUser: ", arg)
+  return true
+})
