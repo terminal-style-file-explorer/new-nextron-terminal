@@ -70,22 +70,21 @@ export async function SetResult(
 
     async function checkUser(user: User) {
         try {
-          const response = await window.ipc.invoke('checkUser', user);
-          return response;
+            const response = await window.ipc.invoke('checkUser', user);
+            return response;
         } catch (err) {
-          console.log(err);
+            console.log(err);
         }
-      }
-    
-      async function addUser(user: User) {
-        try {
-          const response = await window.ipc.invoke('addUser', user);
-          return response;
-        } catch (err) {
-          console.log(err);
-        }
-      }
+    }
 
+    async function addUser(user: User) {
+        try {
+            const response = await window.ipc.invoke('addUser', user);
+            return response;
+        } catch (err) {
+            console.log(err);
+        }
+    }
     if (input === "") {
         setHistorytoReturn(<Empty />);
         setResuleHistory([...resultHistory, historytoReturn])

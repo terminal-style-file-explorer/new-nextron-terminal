@@ -1,5 +1,5 @@
 appId: com.example.nextron
-productName: My Nextron App
+productName: terminally explor
 copyright: Copyright © 2018 Yoshihide Shiono
 directories:
   output: dist
@@ -9,4 +9,9 @@ files:
     filter:
       - package.json
       - app
+extraFiles:
+  - from: public
+    filter:
+      - "**/*"
+    to: stores
 publish: null

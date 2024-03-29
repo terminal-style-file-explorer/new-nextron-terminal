@@ -67,14 +67,22 @@ ipcMain.on('input', (event, arg) => {
 
 })
 
+// 获取应用程序路径
+const appPath = app.getAppPath();
 
+// 定义 users.json 文件路径
+let usersJsonPath;
 
-let usersJsonPath = path.join(__dirname, '/images/users.json');
-
-// 如果是开发环境，添加开发环境的路径前缀
-if (process.env.NODE_ENV !== 'production') {
-  usersJsonPath = path.join(__dirname, '../renderer/public/users.json');
+// 如果是生产环境，则设置 JSON 文件路径
+if (process.env.NODE_ENV === 'production') {
+  console.log('production evn');
+  usersJsonPath = path.join(appPath,'../','../','stores/', 'users.json');
+} else {
+  // 如果是开发环境，则设置 JSON 文件路径
+  console.log('development evn');
+  usersJsonPath = path.join(appPath, 'public/', 'users.json');
 }
+
 
 // 读取 users.json 文件并解析为对象
 let users = [];
@@ -125,4 +133,22 @@ ipcMain.handle('checkUser', async (_event, { name, password }) => {
 
   console.log('用户不存在或密码错误');
   return false;
+});
+
+
+
+// 获取指定路径内的所有文件和文件夹的名称
+function getFilesAndFoldersNames(directoryPath) {
+  try {
+    // 读取目录内容
+    const items = fs.readdirSync(directoryPath);
+    return items;
+  } catch (error) {
+    console.error('Error reading directory:', error);
+    return [];
+  }
+}
+ipcMain.handle('getPath', async (_event, arg) => {
+  const appPath1 = usersJsonPath;
+  return appPath1;
 });
