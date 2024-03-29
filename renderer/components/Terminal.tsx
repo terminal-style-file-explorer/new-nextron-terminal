@@ -179,6 +179,7 @@ export default function HomePage() {
     setCmdHistory([]);
     setUserHistory([]);
     setResultHistory([]);
+    setHints([]);
   }
 
   const handleDivClick = () => {
