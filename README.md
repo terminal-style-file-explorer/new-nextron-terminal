@@ -1,38 +1,61 @@
-<p align="center"><img src="https://i.imgur.com/a9QWW0v.png"></p>
+# 终端风文件阅读器
 
-## Usage
+## 简介
 
-### Create an App
+该项目是一个终端风格的文件阅读器，目前正在开发中。
 
-```
-# with npx
-$ npx create-nextron-app my-app --example with-tailwindcss
+本项目基本基于 [satnaing/terminal-portfolio](https://github.com/satnaing/terminal-portfolio)，并在其的基础上增加一些功能
 
-# with yarn
-$ yarn create nextron-app my-app --example with-tailwindcss
+~~也许会有release~~
 
-# with pnpm
-$ pnpm dlx create-nextron-app my-app --example with-tailwindcss
-```
+## 使用说明
 
-### Install Dependencies
+如果你想使用该项目，可以按照以下步骤进行：
 
-```
-$ cd my-app
+1. 克隆项目：
 
-# using yarn or npm
-$ yarn (or `npm install`)
+    ```bash
+    git clone git@github.com:terminal-style-file-explorer/new-nextron-terminal.git
+    ```
 
-# using pnpm
-$ pnpm install --shamefully-hoist
-```
+2. 进入项目目录：
 
-### Use it
+    ```bash
+    cd new-nextron-terminal
+    ```
 
-```
-# development mode
-$ yarn dev (or `npm run dev` or `pnpm run dev`)
+3. 移除原始远程仓库：
 
-# production build
-$ yarn build (or `npm run build` or `pnpm run build`)
-```
+    ```bash
+    git remote remove origin
+    ```
+
+4. 安装依赖：
+
+    ```bash
+    npm install
+    ```
+
+5. 运行开发服务器：
+
+    ```bash
+    npm run dev
+    ```
+
+## 修改/分发说明
+
+### 程序加载创作者加入的内容
+
+暂定程序加载创作者加入的内容的地址为 `/public/`。具体加载和使用方法还在设计中。
+
+1. 将你想要加入的内容放置在 `/public/` 目录下。
+
+2. 使用以下步骤生成客户端：
+
+   ```bash
+   npm run build:win32
+   npm run build:win64
+   npm run build:mac
+   npm run build:mac:universal
+   npm run build:linux
+   ```
