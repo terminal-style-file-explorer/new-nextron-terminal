@@ -31,3 +31,55 @@ export const checkThemeSwitch = (
   currentCommand.length > 1 && // current command has arg
   currentCommand.length < 4 && // if num of arg is valid (not `themes set light sth`)
   _.includes(themes, currentCommand[2]); // arg last part is one of id
+
+
+
+
+  /**
+ * Perform advanced tab actions
+ * @param {string} inputVal - current input value
+ * @param {(value: React.SetStateAction<string>) => void} setInputVal - setInputVal setState
+ * @param {(value: React.SetStateAction<string[]>) => void} setHints - setHints setState
+ * @param {hintsCmds} hintsCmds - hints command array
+ * @returns {string[] | undefined} hints command or setState action(undefined)
+ */
+export const argTab = (
+  inputVal: string,
+  setInputVal: (value: React.SetStateAction<string>) => void,
+  setHints: (value: React.SetStateAction<string[]>) => void,
+  hintsCmds: string[]
+): string[] | undefined => {
+  // 1) if input is 'themes '
+  if (inputVal === "themes ") {
+    setInputVal(`themes set`);
+    return [];
+  }
+
+  // 2) if input is 'themes s'
+  else if (
+    _.startsWith("themes", _.split(inputVal, " ")[0]) &&
+    _.split(inputVal, " ")[1] !== "set" &&
+    _.startsWith("set", _.split(inputVal, " ")[1])
+  ) {
+    setInputVal(`themes set`);
+    return [];
+  }
+
+  // 3) if input is 'themes set '
+  else if (inputVal === "themes set ") {
+    setHints(_.keys(theme));
+    return [];
+  }
+
+  // 4) if input starts with 'themes set ' + theme
+  else if (_.startsWith(inputVal, "themes set ")) {
+    _.keys(theme).forEach(t => {
+      if (_.startsWith(t, _.split(inputVal, " ")[2])) {
+        hintsCmds = [...hintsCmds, t];
+      }
+    });
+    return hintsCmds;
+  }
+
+  // wait for other cases
+};

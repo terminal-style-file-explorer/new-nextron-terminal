@@ -11,7 +11,6 @@ import {
 } from './styles/terminal.styled';
 import React, { useCallback, useEffect, createContext } from 'react'
 import _ from "lodash";
-import { Output } from './Output';
 import { SetResult } from './SetResult';
 import { themeContext } from '../pages/home';
 export type User = {
@@ -25,6 +24,7 @@ type Command = {
   tab: number;
 }[];
 import theme from './styles/themes';
+import { argTab } from '../utils/funcs';
 
 
 
@@ -155,7 +155,28 @@ export default function HomePage() {
 
 
     if (e.key === "Tab") {
+      e.preventDefault();
+      if (!inputValue) return;
+      let hintCmds = [];
+      commands.forEach((cmd) => {
+        if (_.startsWith(cmd, inputValue)) {
+          hintCmds = [...hintCmds, cmd];
+        }
+      });
+      const returnedHints = argTab(inputValue, setInputValue, setHints, hintCmds);
+      hintCmds = returnedHints ? [...hintCmds, returnedHints] : hintCmds;
 
+      if (hintCmds.length > 1) {
+        setHints(hintCmds);
+      }
+      else if (hintCmds.length === 1) {
+        const currentCmd = _.split(inputValue, ' ');
+        setInputValue(
+          currentCmd.length !== 1
+            ? `${currentCmd[0]} ${currentCmd[1]} ${hintCmds[0]}` : hintCmds[0]
+        )
+        setHints([]);
+      }
     }
 
     /*
