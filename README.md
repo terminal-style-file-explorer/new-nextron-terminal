@@ -4,7 +4,7 @@
 
 该项目是一个终端风格的文件阅读器，目前正在开发中。
 
-本项目基本基于 [satnaing/terminal-portfolio](https://github.com/satnaing/terminal-portfolio)，并在其的基础上增加一些功能
+本项目的实现思想基于 [satnaing/terminal-portfolio](https://github.com/satnaing/terminal-portfolio)
 
 ~~也许会有release~~
 
