@@ -69,39 +69,26 @@ export default function HomePage() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hints, setHints] = React.useState<string[]>([]);
-  const [event, setEvent] = React.useState([]);
+  const [event, setEvent] = React.useState(['input help to get available commands']);
   const [resultHistory, setResultHistory] = React.useState<JSX.Element[]>([]);
   const themeSwitcher = React.useContext(themeContext);
   const [ThemeByResult, setThemeByResult] = React.useState("dark");
   const router = useRouter();
 
-
-
-
-
-
   const handleRouter = (path: string) => {
     router.push(path);
   }
-
-
 
   React.useEffect(() => {
     console.log('ThemeByResult', ThemeByResult);
     themeSwitcher(theme[ThemeByResult]);
   }, [ThemeByResult]);
 
-
-
-
   React.useEffect(() => {
     console.log('cmdH', cmdHistory);
     console.log('userH', userHistory);
     console.log('resultH', resultHistory);
   }, [cmdHistory, userHistory, resultHistory]);
-
-
-
 
   React.useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -111,17 +98,7 @@ export default function HomePage() {
       setUser(JSON.parse(localStorage.getItem('user')))
     }
   }, []);
-  /*
-    React.useEffect(() => {
-      if (!localStorage.getItem('user')) {
-        setUser({ name: 'user', password: '', auth: 0 })
-      }
-      else {
-        setUser(JSON.parse(localStorage.getItem('user')))
-      }
-    }
-      , []);
-  */
+
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }
@@ -140,7 +117,6 @@ export default function HomePage() {
       handleRouter,
       setUser,
     );
-    window.ipc.send('message', inputValue);
     setInputValue('');
     setHints([]);
     setPointer(0);
@@ -178,10 +154,15 @@ export default function HomePage() {
     }
 
 
-    if (ctrlL) {
-      router.push('/login')
+    if (e.key === "Tab") {
+
     }
 
+    /*
+        if (ctrlL) {
+          router.push('/login')
+        }
+    */
 
   }
 

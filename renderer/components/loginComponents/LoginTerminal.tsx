@@ -35,7 +35,6 @@ export default function LoginTerminal() {
   const [user, setUser] = React.useState<User>(
     { name: 'visitor', password: '000000', auth: 0 }
   );
-  const [path, setPath] = React.useState<string[]>([]);
   async function checkUser(user: User) {
     try {
       const response = await window.ipc.invoke('checkUser', user);
@@ -54,18 +53,6 @@ export default function LoginTerminal() {
     }
   }
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await window.ipc.invoke('getPath', 'userData');
-        setPath(response);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchData();
-  }, []);
 
 
 
@@ -201,7 +188,7 @@ export default function LoginTerminal() {
         })}
       </div>
       {
-        <p>{path}</p>
+       
       }
     </Wrapper>
   );

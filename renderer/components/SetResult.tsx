@@ -102,6 +102,8 @@ export async function SetResult(
                 }
                 break;
             case "echo":
+                setHistorytoReturn(<UsageDiv>{'/home'}</UsageDiv>)
+                setResuleHistory([...resultHistory, historytoReturn])
                 break;
             case "help":
                 Help(setHistorytoReturn);
@@ -124,33 +126,46 @@ export async function SetResult(
                 }
                 break;
             case "adduser":
-                const userToAdd = { name: arg[0], password: arg[1], auth: 0 };
-                const addUserResponse = await addUser(userToAdd);
-                if (addUserResponse) {
-                    setHistorytoReturn(<UsageDiv> user added as {arg[0]}</UsageDiv>)
-                    setUser(userToAdd);
-                    setUserToLS(userToAdd);
-                    setResuleHistory([...resultHistory, historytoReturn])
+                if (arg.length === 2 && arg[0] && arg[1]) {
+                    const userToAdd = { name: arg[0], password: arg[1], auth: 0 };
+                    const addUserResponse = await addUser(userToAdd);
+                    if (addUserResponse) {
+                        setHistorytoReturn(<UsageDiv> user added as {arg[0]}</UsageDiv>)
+                        setUser(userToAdd);
+                        setUserToLS(userToAdd);
+                        setResuleHistory([...resultHistory, historytoReturn])
+                    }
+                    else {
+                        setHistorytoReturn(<UsageDiv>user already exists</UsageDiv>)
+                        setResuleHistory([...resultHistory, historytoReturn])
+                    }
                 }
                 else {
-                    setHistorytoReturn(<UsageDiv>user already exists</UsageDiv>)
+                    setHistorytoReturn(<UsageDiv>please input: <Cmd>adduser `username` `password`</Cmd></UsageDiv>)
                     setResuleHistory([...resultHistory, historytoReturn])
                 }
+
                 break;
             case "su":
-                const userToCheck = { name: arg[0], password: arg[1], auth: 0 };
-                const checkUserResponse = await checkUser(userToCheck);
-                if (checkUserResponse) {
-                    setHistorytoReturn(<Empty />)
-                    setUser(userToCheck);
-                    setUserToLS(userToCheck);
-                    setResuleHistory([...resultHistory, historytoReturn])
+                if (arg.length === 2 && arg[0] && arg[1]) {
+                    const userToCheck = { name: arg[0], password: arg[1], auth: 0 };
+                    const checkUserResponse = await checkUser(userToCheck);
+                    if (checkUserResponse) {
+                        setHistorytoReturn(<Empty />)
+                        setUser(userToCheck);
+                        setUserToLS(userToCheck);
+                        setResuleHistory([...resultHistory, historytoReturn])
+                    }
+                    else {
+                        setHistorytoReturn(<UsageDiv>please check your username or password</UsageDiv>)
+                        setResuleHistory([...resultHistory, historytoReturn])
+                    }
                 }
                 else {
-                    setHistorytoReturn(<UsageDiv>please check your username or password</UsageDiv>)
+                    setHistorytoReturn(<UsageDiv>please input: <Cmd>su `username` `password`</Cmd></UsageDiv>)
                     setResuleHistory([...resultHistory, historytoReturn])
-
                 }
+
                 break;
             case "cd":
                 setResuleHistory([...resultHistory, notFinished()])
