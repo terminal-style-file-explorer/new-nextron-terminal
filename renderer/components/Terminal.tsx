@@ -25,6 +25,8 @@ type Command = {
 }[];
 import theme from './styles/themes';
 import { argTab } from '../utils/funcs';
+import { UsageDiv } from './styles/outout.styled';
+import { Cmd } from './styles/help.styled';
 
 
 
@@ -69,7 +71,8 @@ export default function HomePage() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hints, setHints] = React.useState<string[]>([]);
-  const [event, setEvent] = React.useState(['input help to get available commands']);
+  const [event, setEvent] = React.useState<JSX.Element[]>([<>input <Cmd>helo</Cmd> to get available commands</>]);
+  //  const [event, setEvent] = React.useState(['input help to get available commands']);
   const [resultHistory, setResultHistory] = React.useState<JSX.Element[]>([]);
   const themeSwitcher = React.useContext(themeContext);
   const [ThemeByResult, setThemeByResult] = React.useState("dark");
@@ -155,6 +158,7 @@ export default function HomePage() {
 
 
     if (e.key === "Tab") {
+      console.log('entered tab', inputValue, hints);
       e.preventDefault();
       if (!inputValue) return;
       let hintCmds = [];
