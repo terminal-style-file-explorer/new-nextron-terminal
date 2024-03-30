@@ -48,24 +48,7 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
-/*
-ipcMain.on('message', (event, arg) => {
-  console.log("向主进程里发送input： ", arg)
-  event.reply('input-reply', `${arg} World!`)
-})
-*/
-ipcMain.handle('message', async (_event, arg) => {
-  console.log("向主进程里发送input： ", arg)
-  return `${arg} World!`
-})
 
-
-ipcMain.on('input', (event, arg) => {
-  console.log("input: ", arg ?? "new window")
-
-  event.reply('input-reply', `input: ${arg}`)
-
-})
 
 // 获取应用程序路径
 const appPath = app.getAppPath();
@@ -76,7 +59,7 @@ let usersJsonPath;
 // 如果是生产环境，则设置 JSON 文件路径
 if (process.env.NODE_ENV === 'production') {
   console.log('production evn');
-  usersJsonPath = path.join(appPath,'../','../','stores/', 'users.json');
+  usersJsonPath = path.join(appPath, '../', '../', 'stores/', 'users.json');
 } else {
   // 如果是开发环境，则设置 JSON 文件路径
   console.log('development evn');
@@ -151,4 +134,24 @@ function getFilesAndFoldersNames(directoryPath) {
 ipcMain.handle('getPath', async (_event, arg) => {
   const appPath1 = usersJsonPath;
   return appPath1;
+});
+
+
+let contentPath;
+
+if (process.env.NODE_ENV === 'production') {
+  contentPath = path.join(appPath, '../', '../', 'stores/', 'contents/');
+} else {
+  contentPath = path.join(appPath, 'public/', 'contents/');
+}
+
+let MainProcessContentPath = contentPath;
+
+ipcMain.handle('getContents', async (_event, arg) => {
+  const MainProcessContentPath = getFilesAndFoldersNames(contentPath);
+  return MainProcessContentPath;
+});
+
+ipcMain.on('changeContentPath', (_event, arg) => {
+  MainProcessContentPath = arg;
 });
