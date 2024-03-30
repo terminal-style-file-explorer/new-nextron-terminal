@@ -81,5 +81,9 @@ export const argTab = (
     return hintsCmds;
   }
 
+  else if(inputVal === 'themes'){
+    setInputVal('themes set');
+  }
+
   // wait for other cases
 };

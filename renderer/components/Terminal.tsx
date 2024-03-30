@@ -163,7 +163,7 @@ export default function HomePage() {
         }
       });
       const returnedHints = argTab(inputValue, setInputValue, setHints, hintCmds);
-      hintCmds = returnedHints ? [...hintCmds, returnedHints] : hintCmds;
+      hintCmds = returnedHints ? [...hintCmds, ...returnedHints] : hintCmds;
 
       console.log('hintCmds', hintCmds);
 
