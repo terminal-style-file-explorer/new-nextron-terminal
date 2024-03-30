@@ -131,11 +131,6 @@ export default function HomePage() {
     const ctrlI = e.ctrlKey && e.key.toLowerCase() === "i";
     const ctrlL = e.ctrlKey && e.key.toLowerCase() === "l";
 
-
-    if (e.key === "Tab") {
-      e.preventDefault();
-      // setInputValue(inputValue + "  ")
-    }
     if (e.key === "ArrowUp") {
       const newPointer = pointer - 1;
       if (Math.abs(newPointer) <= cmdHistory.length) {
@@ -163,12 +158,14 @@ export default function HomePage() {
       if (!inputValue) return;
       let hintCmds = [];
       commands.forEach((cmd) => {
-        if (_.startsWith(cmd, inputValue)) {
-          hintCmds = [...hintCmds, cmd];
+        if (_.startsWith(cmd.cmd, inputValue)) {
+          hintCmds = [...hintCmds, cmd.cmd];
         }
       });
       const returnedHints = argTab(inputValue, setInputValue, setHints, hintCmds);
       hintCmds = returnedHints ? [...hintCmds, returnedHints] : hintCmds;
+
+      console.log('hintCmds', hintCmds);
 
       if (hintCmds.length > 1) {
         setHints(hintCmds);
@@ -220,6 +217,13 @@ export default function HomePage() {
   return (
     <Wrapper ref={containerRef} className=''>
       {/**  <Hint /> */}
+      {hints.length > 1 && (
+        <div>
+          {hints.map(hCmd => (
+            <Hints key={hCmd}>{hCmd}</Hints>
+          ))}
+        </div>
+      )}
       <Form onSubmit={handleSubmit} className='flex'>
         <label>
           <User>{user.name ? user.name + "@:  " : "user" + "@:   "}</User>
