@@ -107,6 +107,7 @@ export default function HomePage() {
     , [inputValue]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 阻止默认提交行为
+    console.log('userHistory', user.name);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
     SetResult(inputValue,
@@ -244,7 +245,7 @@ export default function HomePage() {
             <div key={_.uniqueId(`${cmdH}_`)}>
               <div key={index}>
                 <div id='terminal-info'>
-                  <User> {userHistory[userHistory.length - 1]}</User>
+                  <User> {userHistory[index]}</User>
                   <span>@: {cmdH}</span>
                 </div>
                 <div id='terminal-output'>
