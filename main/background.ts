@@ -78,7 +78,7 @@ try {
 }
 
 // 添加用户
-ipcMain.handle('addUser', async (_event, newUser) => {
+ipcMain.handle('addUser', (_event, newUser) => {
   console.log("addUser: ", newUser);
   console.log("users in images", users[0]?.name);
 
@@ -104,7 +104,7 @@ ipcMain.handle('addUser', async (_event, newUser) => {
 });
 
 // 检查用户
-ipcMain.handle('checkUser', async (_event, { name, password }) => {
+ipcMain.handle('checkUser', (_event, { name, password }) => {
   console.log("checkUser: ", name);
 
   // 查找用户
@@ -131,7 +131,7 @@ function getFilesAndFoldersNames(directoryPath) {
     return [];
   }
 }
-ipcMain.handle('getPath', async (_event, arg) => {
+ipcMain.handle('getPath', (_event, arg) => {
   const appPath1 = usersJsonPath;
   return appPath1;
 });
@@ -147,7 +147,7 @@ if (process.env.NODE_ENV === 'production') {
 
 let MainProcessContentPath = contentPath;
 
-ipcMain.handle('getContents', async (_event) => {
+ipcMain.handle('getContents', (_event) => {
   const MainProcessContentPath = getFilesAndFoldersNames(contentPath);
   return MainProcessContentPath;
 });
@@ -156,7 +156,7 @@ ipcMain.on('setContentPath', (_event, arg) => {
   MainProcessContentPath = arg;
 });
 
-ipcMain.handle('getContentPath', async (_event) => {
+ipcMain.handle('getContentPath', (_event) => {
   let MainProcessContentPathToReturn;
   if (MainProcessContentPath === contentPath) {
     MainProcessContentPathToReturn = '/home/';

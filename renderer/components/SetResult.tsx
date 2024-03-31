@@ -68,9 +68,9 @@ export async function SetResult(
         return <div>Not finished</div>
     }
 
-    async function checkUser(user: User) {
+    function checkUser(user: User) {
         try {
-            const response = await window.ipc.invoke('checkUser', user);
+            const response = window.ipc.invoke('checkUser', user);
             return response;
         } catch (err) {
             console.log(err);
@@ -79,9 +79,9 @@ export async function SetResult(
         }
     }
 
-    async function addUser(user: User) {
+    function addUser(user: User) {
         try {
-            const response = await window.ipc.invoke('addUser', user);
+            const response = window.ipc.invoke('addUser', user);
             return response;
         } catch (err) {
             console.log(err);
@@ -90,9 +90,9 @@ export async function SetResult(
         }
     }
 
-    async function getPath() {
+    function getPath() {
         try {
-            const response = await window.ipc.invoke('getContentPath', 'contentPath');
+            const response = window.ipc.invoke('getContentPath', 'contentPath');
             return response;
         } catch (err) {
             console.log(err);
@@ -101,9 +101,9 @@ export async function SetResult(
         }
     }
 
-    async function showFilesAndFoldersNames() {
+    function showFilesAndFoldersNames() {
         try {
-            const response: string[] = await window.ipc.invoke('getContents', 'contentPath');
+            const response = window.ipc.invoke('getContents', 'contentPath');
             return response;
         } catch (err) {
             console.log(err);

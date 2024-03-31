@@ -35,18 +35,18 @@ export default function LoginTerminal() {
   const [user, setUser] = React.useState<User>(
     { name: 'visitor', password: '000000', auth: 0 }
   );
-  async function checkUser(user: User) {
+  function checkUser(user: User) {
     try {
-      const response = await window.ipc.invoke('checkUser', user);
+      const response = window.ipc.invoke('checkUser', user);
       return response;
     } catch (err) {
       console.log(err);
     }
   }
 
-  async function addUser(user: User) {
+  function addUser(user: User) {
     try {
-      const response = await window.ipc.invoke('addUser', user);
+      const response = window.ipc.invoke('addUser', user);
       return response;
     } catch (err) {
       console.log(err);
@@ -56,7 +56,7 @@ export default function LoginTerminal() {
 
 
 
-  const cmdParse = async (cmd: string) => {
+  const cmdParse = (cmd: string) => {
     let cmdArray = _.split(_.trim(cmd), ' ');
     let validCmd = _.find(commands, { cmd: cmdArray[0] });
     let currentCmd = cmdArray[0];
@@ -127,10 +127,10 @@ export default function LoginTerminal() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCmdHistory([...cmdHistory, inputValue]);
-    const result = await cmdParse(inputValue);
+    const result = cmdParse(inputValue);
     setResultHistory([...resultHistory, result]);
     setInputValue('');
   };
@@ -188,7 +188,7 @@ export default function LoginTerminal() {
         })}
       </div>
       {
-       
+
       }
     </Wrapper>
   );
