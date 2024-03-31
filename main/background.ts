@@ -147,11 +147,24 @@ if (process.env.NODE_ENV === 'production') {
 
 let MainProcessContentPath = contentPath;
 
-ipcMain.handle('getContents', async (_event, arg) => {
+ipcMain.handle('getContents', async (_event) => {
   const MainProcessContentPath = getFilesAndFoldersNames(contentPath);
   return MainProcessContentPath;
 });
 
-ipcMain.on('changeContentPath', (_event, arg) => {
+ipcMain.on('setContentPath', (_event, arg) => {
   MainProcessContentPath = arg;
+});
+
+ipcMain.handle('getContentPath', async (_event) => {
+  let MainProcessContentPathToReturn;
+  if (MainProcessContentPath === contentPath) {
+    MainProcessContentPathToReturn = '/home/';
+  } else {
+    // 获取最后一个斜杠后面的部分
+    const subPath = MainProcessContentPath.substring(contentPath.length);
+    MainProcessContentPathToReturn = '/home/' + subPath;
+  }
+  console.log('MainProcessContentPathToReturn', MainProcessContentPathToReturn);
+  return MainProcessContentPathToReturn;
 });

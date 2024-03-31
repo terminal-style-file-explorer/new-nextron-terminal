@@ -56,7 +56,7 @@ export async function SetResult(
     const command = commandArray[0];
     const arg = _.drop(commandArray);
     //呼出对应的功能/输出
-    const specialCmds = ["themes", "mail"];
+    // const specialCmds = ["themes", "mail"];
     let historytoReturn = <Empty />;
     const setHistorytoReturn = (Element: JSX.Element) => {
         historytoReturn = Element;
@@ -85,6 +85,15 @@ export async function SetResult(
             console.log(err);
         }
     }
+
+    async function getPath() {
+        try {
+            const response = await window.ipc.invoke('getContentPath', 'contentPath');
+            return response;
+        } catch (err) {
+            console.log(err);
+        }
+    }
     if (input === "") {
         setHistorytoReturn(<Empty />);
         setResuleHistory([...resultHistory, historytoReturn])
@@ -102,6 +111,7 @@ export async function SetResult(
                 }
                 break;
             case "echo":
+                getPath();
                 setHistorytoReturn(<UsageDiv>{'/home'}</UsageDiv>)
                 setResuleHistory([...resultHistory, historytoReturn])
                 break;

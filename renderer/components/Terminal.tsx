@@ -72,7 +72,6 @@ export default function HomePage() {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [hints, setHints] = React.useState<string[]>([]);
   const [event, setEvent] = React.useState<JSX.Element[]>([<>input <Cmd>helo</Cmd> to get available commands</>]);
-  //  const [event, setEvent] = React.useState(['input help to get available commands']);
   const [resultHistory, setResultHistory] = React.useState<JSX.Element[]>([]);
   const themeSwitcher = React.useContext(themeContext);
   const [ThemeByResult, setThemeByResult] = React.useState("dark");
@@ -108,7 +107,6 @@ export default function HomePage() {
     , [inputValue]);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // 阻止默认提交行为
-    // setCmdHistory([...cmdHistory, inputValue]);
     setUserHistory([...userHistory, user.name])
     setCmdHistory([...cmdHistory, inputValue]);
     SetResult(inputValue,
@@ -181,6 +179,7 @@ export default function HomePage() {
     }
 
     /*
+    for testing
         if (ctrlL) {
           router.push('/login')
         }
