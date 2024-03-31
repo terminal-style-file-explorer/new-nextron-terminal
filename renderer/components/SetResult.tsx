@@ -204,7 +204,11 @@ export async function SetResult(
                 if (arg.length === 1) {
                     const path = await getPath();
                     const folderName = arg[0];
-                    if (path.includes(folderName)) {
+                    if (folderName === "../") {
+                        setHistorytoReturn(<Empty />)
+                        setResuleHistory([...resultHistory, historytoReturn])
+                    }
+                    else if (path.includes(folderName)) {
                         setHistorytoReturn(<Empty />)
                         setResuleHistory([...resultHistory, historytoReturn])
                     }
@@ -212,10 +216,10 @@ export async function SetResult(
                         setHistorytoReturn(<UsageDiv>cd: no such file or directory: {folderName}</UsageDiv>)
                         setResuleHistory([...resultHistory, historytoReturn])
                     }
-                 } else {
+                } else {
                     setHistorytoReturn(<UsageDiv>usage: cd `foldername`</UsageDiv>)
                     setResuleHistory([...resultHistory, historytoReturn])
-                  }
+                }
                 break;
             case "dir":
                 const dir = await showFilesAndFoldersNames();
