@@ -196,6 +196,12 @@ export async function SetResult(
 
                 break;
             case "cd":
+                //get input like cd `foldername`
+                //if arg.length === 1,send it to main process to check if it is a folder
+                //exist return '<Empty />' 
+                //not exist return 'cd: no such file or directory: `fildername`'
+                //else return 'usage: cd `foldername`'
+                if (arg.length === 1) { } else { }
                 setResuleHistory([...resultHistory, notFinished()])
                 break;
             case "dir":

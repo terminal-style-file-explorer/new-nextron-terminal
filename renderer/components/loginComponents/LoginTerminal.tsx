@@ -69,7 +69,7 @@ export default function LoginTerminal() {
         let userToCheck = { name: cmdArray[1], password: cmdArray[2], auth: 0 };
         switch (currentCmd) {
           case "adduser":
-            const addUserResponse = await addUser(userToCheck);
+            const addUserResponse = addUser(userToCheck);
             if (addUserResponse) {
               // 库中不存在对应用户名，可以新建用户
               cleanHisotry();
@@ -81,7 +81,7 @@ export default function LoginTerminal() {
             }
             break;
           case "su":
-            const checkUserResponse = await checkUser(userToCheck);
+            const checkUserResponse = checkUser(userToCheck);
             if (checkUserResponse) {
               cleanHisotry();
               setUser(userToCheck);
