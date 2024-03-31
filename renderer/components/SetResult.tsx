@@ -111,8 +111,8 @@ export async function SetResult(
                 }
                 break;
             case "echo":
-                getPath();
-                setHistorytoReturn(<UsageDiv>{'/home'}</UsageDiv>)
+                const path = await getPath();
+                setHistorytoReturn(<UsageDiv>{path}</UsageDiv>)
                 setResuleHistory([...resultHistory, historytoReturn])
                 break;
             case "help":
