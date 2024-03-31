@@ -3,7 +3,7 @@ import _ from "lodash";
 import { useContext } from "react";
 import { termContext } from "./Terminal";
 import { DidNavigateEvent } from "electron";
-import { CmdNotFound, Empty } from "./styles/terminal.styled";
+import { CmdNotFound, Empty, Hints } from "./styles/terminal.styled";
 import { Cls } from './commands2/Cls';
 import { Help } from "./commands2/Help";
 import { History } from "./commands2/History";
@@ -74,6 +74,8 @@ export async function SetResult(
             return response;
         } catch (err) {
             console.log(err);
+            const response = 'Error checking user';
+            return response;
         }
     }
 
@@ -83,6 +85,8 @@ export async function SetResult(
             return response;
         } catch (err) {
             console.log(err);
+            const response = 'Error adding user';
+            return response;
         }
     }
 
@@ -92,8 +96,22 @@ export async function SetResult(
             return response;
         } catch (err) {
             console.log(err);
+            const response = 'Error reading directory';
+            return response;
         }
     }
+
+    async function showFilesAndFoldersNames() {
+        try {
+            const response: string[] = await window.ipc.invoke('getContents', 'contentPath');
+            return response;
+        } catch (err) {
+            console.log(err);
+            const response: string[] = ['Error reading directory'];
+            return response;
+        }
+    }
+
     if (input === "") {
         setHistorytoReturn(<Empty />);
         setResuleHistory([...resultHistory, historytoReturn])
@@ -181,7 +199,13 @@ export async function SetResult(
                 setResuleHistory([...resultHistory, notFinished()])
                 break;
             case "dir":
-                setResuleHistory([...resultHistory, notFinished()])
+                const dir = await showFilesAndFoldersNames();
+                setHistorytoReturn(<UsageDiv>{
+                    dir.map((item, index) => {
+                        return <Hints key={index}>{item} </Hints>
+                    })
+                }</UsageDiv>)
+                setResuleHistory([...resultHistory, historytoReturn])
                 break;
             case "note":
                 setResuleHistory([...resultHistory, notFinished()])
