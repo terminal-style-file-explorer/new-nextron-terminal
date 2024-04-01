@@ -196,6 +196,7 @@ export async function SetResult(
 
                 break;
             case "cd":
+                // WIP
                 //get input like cd `foldername`
                 //if arg.length === 1,send it to main process to check if it is a folder
                 //exist return '<Empty />' 
@@ -206,6 +207,8 @@ export async function SetResult(
                     const folderName = arg[0];
                     if (folderName === "../") {
                         setHistorytoReturn(<Empty />)
+                        //get back to the parent folder
+                        //check if the folder is the root folder
                         setResuleHistory([...resultHistory, historytoReturn])
                     }
                     else if (path.includes(folderName)) {
