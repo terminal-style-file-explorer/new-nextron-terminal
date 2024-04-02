@@ -203,15 +203,9 @@ export async function SetResult(
                 //not exist return 'cd: no such file or directory: `fildername`'
                 //else return 'usage: cd `foldername`'
                 if (arg.length === 1) {
-                    //区分 路径和文件名
-                    if (arg[0].includes('/')) {
-                        //路径
-                    }
-                    else if (arg[0].includes('.')) {
-                        //文件名
-                    } else {
-
-                    }
+                    const result = window.ipc.invoke('changeDirectory', arg[0]);
+                    setHistorytoReturn(<Empty />)
+                    setResuleHistory([...resultHistory, historytoReturn])
                 }
                 else {
                     setHistorytoReturn(<UsageDiv>please input: <Cmd>cd `foldername`</Cmd></UsageDiv>)

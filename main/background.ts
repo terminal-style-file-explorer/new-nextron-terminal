@@ -169,15 +169,21 @@ ipcMain.handle('getContentPath', (_event) => {
   return MainProcessContentPathToReturn;
 });
 
-ipcMain.handle('changeDirectory', (_eventm, arg: string) => {
-  if (arg.includes('..')) {
+function isAllowedPath(newPath) {
+  let root = contentPath;
+  return true;
+}
 
-  }
-  else if (arg.includes('/')) {
 
+ipcMain.handle('changeDirectory', (_event, arg: string) => {
+  const newPath = path.join(MainProcessContentPath, arg);
+  console.log('newPath', newPath);
+  if (isAllowedPath(newPath)) {
+    MainProcessContentPath = newPath;
+    return true;
   }
   else {
-
+    return false;
   }
 
 })
