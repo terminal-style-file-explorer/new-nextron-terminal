@@ -168,3 +168,16 @@ ipcMain.handle('getContentPath', (_event) => {
   console.log('MainProcessContentPathToReturn', MainProcessContentPathToReturn);
   return MainProcessContentPathToReturn;
 });
+
+ipcMain.handle('changeDirectory', (_eventm, arg: string) => {
+  if (arg.includes('..')) {
+
+  }
+  else if (arg.includes('/')) {
+
+  }
+  else {
+
+  }
+
+})

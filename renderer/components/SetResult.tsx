@@ -203,24 +203,18 @@ export async function SetResult(
                 //not exist return 'cd: no such file or directory: `fildername`'
                 //else return 'usage: cd `foldername`'
                 if (arg.length === 1) {
-                    const path = await getPath();
-                    const folderName = arg[0];
-                    if (folderName === "../") {
-                        setHistorytoReturn(<Empty />)
-                        //get back to the parent folder
-                        //check if the folder is the root folder
-                        setResuleHistory([...resultHistory, historytoReturn])
+                    //区分 路径和文件名
+                    if (arg[0].includes('/')) {
+                        //路径
                     }
-                    else if (path.includes(folderName)) {
-                        setHistorytoReturn(<Empty />)
-                        setResuleHistory([...resultHistory, historytoReturn])
+                    else if (arg[0].includes('.')) {
+                        //文件名
+                    } else {
+
                     }
-                    else {
-                        setHistorytoReturn(<UsageDiv>cd: no such file or directory: {folderName}</UsageDiv>)
-                        setResuleHistory([...resultHistory, historytoReturn])
-                    }
-                } else {
-                    setHistorytoReturn(<UsageDiv>usage: cd `foldername`</UsageDiv>)
+                }
+                else {
+                    setHistorytoReturn(<UsageDiv>please input: <Cmd>cd `foldername`</Cmd></UsageDiv>)
                     setResuleHistory([...resultHistory, historytoReturn])
                 }
                 break;
