@@ -148,8 +148,8 @@ if (process.env.NODE_ENV === 'production') {
 let MainProcessContentPath = contentPath;
 
 ipcMain.handle('getContents', (_event) => {
-  const MainProcessContentPath = getFilesAndFoldersNames(contentPath);
-  return MainProcessContentPath;
+  const items = getFilesAndFoldersNames(MainProcessContentPath);
+  return items;
 });
 
 ipcMain.on('setContentPath', (_event, arg) => {
@@ -170,19 +170,30 @@ ipcMain.handle('getContentPath', (_event) => {
 });
 
 function isAllowedPath(newPath) {
+  //check exist and is over root
   let root = contentPath;
-  return true;
+  if (!fs.existsSync
+    (newPath) || newPath.length < root.length) {
+    console.log('not exist or over root');
+    return false;
+  } else {
+    console.log('exist and not over root');
+    return true;
+
+  }
 }
 
 
 ipcMain.handle('changeDirectory', (_event, arg: string) => {
-  const newPath = path.join(MainProcessContentPath, arg);
-  console.log('newPath', newPath);
-  if (isAllowedPath(newPath)) {
-    MainProcessContentPath = newPath;
+  const newPathBeforeExecute = path.join(MainProcessContentPath, arg);
+  console.log('newPath', newPathBeforeExecute);
+  if (isAllowedPath(newPathBeforeExecute)) {
+    MainProcessContentPath = newPathBeforeExecute;
+    console.log('handle change path true')
     return true;
   }
   else {
+    console.log('handle change path false')
     return false;
   }
 

@@ -203,9 +203,16 @@ export async function SetResult(
                 //not exist return 'cd: no such file or directory: `fildername`'
                 //else return 'usage: cd `foldername`'
                 if (arg.length === 1) {
-                    const result = window.ipc.invoke('changeDirectory', arg[0]);
-                    setHistorytoReturn(<Empty />)
-                    setResuleHistory([...resultHistory, historytoReturn])
+                    const result = await window.ipc.invoke('changeDirectory', arg[0]);
+                    console.log('result in invoke changedir',result);
+                    if (result) {
+                        setHistorytoReturn(<UsageDiv>cd: {arg} success</UsageDiv>)
+                        setResuleHistory([...resultHistory, historytoReturn])
+                    }
+                    else {
+                        setHistorytoReturn(<UsageDiv>cd: no such directory: {arg[0]}</UsageDiv>)
+                        setResuleHistory([...resultHistory, historytoReturn])
+                    }
                 }
                 else {
                     setHistorytoReturn(<UsageDiv>please input: <Cmd>cd `foldername`</Cmd></UsageDiv>)
