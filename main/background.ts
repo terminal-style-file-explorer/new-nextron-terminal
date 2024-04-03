@@ -48,7 +48,15 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
+let isLoad = false;
 
+ipcMain.on('load', (_event) => {
+  return isLoad;
+})
+
+ipcMain.on('loaded', (_event) => {
+  isLoad = true;
+});
 
 // 获取应用程序路径
 const appPath = app.getAppPath();
