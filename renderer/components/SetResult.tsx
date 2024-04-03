@@ -18,6 +18,7 @@ import { Cmd } from "./styles/help.styled";
 import { User } from "./Terminal";
 import { Su } from "./commands2/Su";
 import { setUserToLS } from "../utils/storage";
+import { setgid } from "process";
 
 type Command = {
     cmd: string;
@@ -39,6 +40,7 @@ export const commands: Command = [
     { cmd: "note", desc: "enter clue book", tab: 9 },
     { cmd: "mail", desc: "enter mail", tab: 9 },
     { cmd: "options", desc: "check available options", tab: 6 },
+    { cmd: 'open', desc: 'open a file', tab: 9 },
 
 ];
 
@@ -196,15 +198,9 @@ export async function SetResult(
 
                 break;
             case "cd":
-                // WIP
-                //get input like cd `foldername`
-                //if arg.length === 1,send it to main process to check if it is a folder
-                //exist return '<Empty />' 
-                //not exist return 'cd: no such file or directory: `fildername`'
-                //else return 'usage: cd `foldername`'
                 if (arg.length === 1) {
                     const result = await window.ipc.invoke('changeDirectory', arg[0]);
-                    console.log('result in invoke changedir',result);
+                    console.log('result in invoke changedir', result);
                     if (result) {
                         setHistorytoReturn(<UsageDiv>cd: {arg} success</UsageDiv>)
                         setResuleHistory([...resultHistory, historytoReturn])
@@ -229,22 +225,37 @@ export async function SetResult(
                 setResuleHistory([...resultHistory, historytoReturn])
                 break;
             case "note":
-                setResuleHistory([...resultHistory, notFinished()])
+                if (arg.length === 0) {
+                    handleRouter('/note');
+                    setHistorytoReturn(<Empty />)
+                    setResuleHistory([...resultHistory, historytoReturn])
+                }
+                else{
+                    setHistorytoReturn(<UsageDiv>Would you like to input: <Cmd>note</Cmd></UsageDiv>)
+                    setResuleHistory([...resultHistory, historytoReturn])
+                }
                 break;
             case "mail":
                 //router.push('/mail'); 应该在terminal里面实现，然后导入function进来 如 pushRouter('mail')
                 //应检查是否有参数
                 if (arg.length === 0) {
                     handleRouter('/mail');
+                    setHistorytoReturn(<Empty />)
+                    setResuleHistory([...resultHistory, historytoReturn])
                 } else {
-                    setHistorytoReturn(<UsageDiv>Would you like to input: <Cmd>cls</Cmd></UsageDiv>)
+                    setHistorytoReturn(<UsageDiv>Would you like to input: <Cmd>mail</Cmd></UsageDiv>)
                     setResuleHistory([...resultHistory, historytoReturn])
                 }
-
                 break;
             case "options":
                 setResuleHistory([...resultHistory, notFinished()])
                 break;
+            case "open":
+                if (arg.length === 1) { }
+                else {
+                    setHistorytoReturn(<UsageDiv>please input: <Cmd>open `filename`</Cmd></UsageDiv>)
+                    setResuleHistory([...resultHistory, historytoReturn])
+                }
             default:
                 break;
         }
