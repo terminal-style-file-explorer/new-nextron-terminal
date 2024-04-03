@@ -55,7 +55,7 @@ function App() {
     async function checkIsLoad() {
       const isLoad = await window.ipc.invoke("load", '');
       if (!isLoad) {
-        router.push("/Loading");
+        router.push("/loading");
       }
     }
     checkIsLoad();

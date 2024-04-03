@@ -50,11 +50,11 @@ app.on('window-all-closed', () => {
 
 let isLoad = false;
 
-ipcMain.on('load', (_event) => {
+ipcMain.handle('load', (_event) => {
   return isLoad;
 })
 
-ipcMain.on('loaded', (_event) => {
+ipcMain.handle('loaded', (_event) => {
   isLoad = true;
 });
 
