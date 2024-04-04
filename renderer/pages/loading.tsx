@@ -6,11 +6,14 @@ import { themeContext } from './home';
 import { useRouter } from "next/router";
 import { Wrapper } from "../components/styles/terminal.styled";
 
+
+
+
 function Loading() {
     const { theme, themeLoaded, setMode } = useTheme();
     const [selectedTheme, setSelectedTheme] = useState(theme);
     const router = useRouter();
-
+   
     // Update meta tag colors when switching themes
     useEffect(() => {
         const themeColor = theme.colors?.body;
@@ -44,8 +47,8 @@ function Loading() {
                 <ThemeProvider theme={selectedTheme}>
                     <GlobalStyle theme={selectedTheme} />
                     <themeContext.Provider value={themeSwitcher}>
-                        <Wrapper onKeyDown={handleKeyDown} tabIndex={0}>
-                            <h1>Loading...</h1>
+                        <Wrapper onKeyDown={handleKeyDown} tabIndex={0} className="h-screen grid place-items-center">
+                            <h1>press any key to load</h1>
                         </Wrapper>
                     </themeContext.Provider>
                 </ThemeProvider>

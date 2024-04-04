@@ -47,9 +47,15 @@ export default function LoginPage() {
     setMode(switchTheme);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    router.push('/home');
-  }
+  useEffect(() => {
+    async function checkIsLoad() {
+      const isLoad = await window.ipc.invoke("load", '');
+      if (!isLoad) {
+        router.push("/loading");
+      }
+    }
+    checkIsLoad();
+  }, []);
 
   return (
     <>
