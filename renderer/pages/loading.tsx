@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { DefaultTheme, ThemeProvider } from "styled-components";
 import { useTheme } from "../hooks/useTheme";
 import GlobalStyle from "../components/styles/GlobalStyle";
@@ -13,6 +13,7 @@ function Loading() {
     const { theme, themeLoaded, setMode } = useTheme();
     const [selectedTheme, setSelectedTheme] = useState(theme);
     const router = useRouter();
+    const wrapperRef = useRef(null);
    
     // Update meta tag colors when switching themes
     useEffect(() => {
@@ -40,6 +41,12 @@ function Loading() {
         router.push('/home');
     }
 
+    useEffect(() => {
+        if (wrapperRef.current) {
+            wrapperRef.current.focus();
+        }
+    }, []);
+
 
     return (
         <>
@@ -47,7 +54,7 @@ function Loading() {
                 <ThemeProvider theme={selectedTheme}>
                     <GlobalStyle theme={selectedTheme} />
                     <themeContext.Provider value={themeSwitcher}>
-                        <Wrapper onKeyDown={handleKeyDown} tabIndex={0} className="h-screen grid place-items-center">
+                        <Wrapper onKeyDown={handleKeyDown} tabIndex={0} className="h-screen grid place-items-center"  ref={wrapperRef} >
                             <h1>press any key to load</h1>
                         </Wrapper>
                     </themeContext.Provider>
