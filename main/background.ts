@@ -1,10 +1,12 @@
 import path from 'path'
-import { BrowserView, app, ipcMain } from 'electron'
+import { BrowserView, app, ipcMain, screen } from 'electron'
 import serve from 'electron-serve'
 import Store from 'electron-store'
 import { createWindow } from './helpers'
 import { fsync } from 'fs'
 import { isContext } from 'vm'
+
+
 
 import * as fs from 'fs';
 type User = {
@@ -12,7 +14,6 @@ type User = {
   password: string;
   auth: number;
 };
-
 
 
 
@@ -28,8 +29,11 @@ if (isProd) {
   await app.whenReady()
 
   const mainWindow = createWindow('main', {
-    width: 1000,
-    height: 600,
+
+
+    width: screen.getPrimaryDisplay().workAreaSize.width,
+    height: screen.getPrimaryDisplay().workAreaSize.height,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
