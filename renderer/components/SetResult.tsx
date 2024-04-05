@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import { useContext } from "react";
 import { termContext } from "./Terminal";
-import { DidNavigateEvent } from "electron";
+import { DidNavigateEvent, app } from "electron";
 import { CmdNotFound, Empty, Hints } from "./styles/terminal.styled";
 import { Cls } from './commands2/Cls';
 import { Help } from "./commands2/Help";
@@ -259,7 +259,7 @@ export async function SetResult(
                 }
                 break;
             case "exit":
-                window.close();
+                window.ipc.invoke('close', 'close');
                 break;
             default:
                 break;

@@ -9,6 +9,11 @@ export const Wrapper = styled.div`
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
 
+  margin-left: 1rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+
   
 `;
 

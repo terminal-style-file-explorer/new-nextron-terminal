@@ -53,6 +53,10 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
+ipcMain.handle('close', (_event) => {
+  process.exit();
+});
+
 let isLoad = false;
 
 ipcMain.handle('load', (_event) => {
