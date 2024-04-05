@@ -46,6 +46,7 @@ export const commands: Command = [
   { cmd: "note", desc: "enter clue book", tab: 9 },
   { cmd: "mail", desc: "enter mail", tab: 9 },
   { cmd: "options", desc: "check available options", tab: 6 },
+  { cmd: "exit", desc: "exit the terminal", tab: 9 },
 
 ];
 type Term = {

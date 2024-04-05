@@ -34,6 +34,7 @@ if (isProd) {
     width: screen.getPrimaryDisplay().workAreaSize.width,
     height: screen.getPrimaryDisplay().workAreaSize.height,
     frame: false,
+    fullscreen: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },

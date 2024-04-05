@@ -41,6 +41,7 @@ export const commands: Command = [
     { cmd: "mail", desc: "enter mail", tab: 9 },
     { cmd: "options", desc: "check available options", tab: 6 },
     { cmd: 'open', desc: 'open a file', tab: 9 },
+    { cmd: "exit", desc: "exit the terminal", tab: 9 },
 
 ];
 
@@ -230,7 +231,7 @@ export async function SetResult(
                     setHistorytoReturn(<Empty />)
                     setResuleHistory([...resultHistory, historytoReturn])
                 }
-                else{
+                else {
                     setHistorytoReturn(<UsageDiv>Would you like to input: <Cmd>note</Cmd></UsageDiv>)
                     setResuleHistory([...resultHistory, historytoReturn])
                 }
@@ -256,6 +257,10 @@ export async function SetResult(
                     setHistorytoReturn(<UsageDiv>please input: <Cmd>open `filename`</Cmd></UsageDiv>)
                     setResuleHistory([...resultHistory, historytoReturn])
                 }
+                break;
+            case "exit":
+                window.close();
+                break;
             default:
                 break;
         }
