@@ -270,7 +270,7 @@ export default function HomePage() {
         />
       </Form>
       {hints.length > 1 && (
-        <div className='relative ' style={{ position: 'fixed', bottom: '0', height: '40px' }}>
+        <div className='relative ' style={{ position: 'fixed', bottom: '0', height: '40px', marginLeft: '80px', marginRight: '80px', borderColor: '#6cf' }}>
           {hints.map(hCmd => (
             <Hints key={hCmd}>{hCmd}</Hints>
           ))}
