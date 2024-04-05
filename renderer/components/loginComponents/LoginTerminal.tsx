@@ -104,7 +104,6 @@ export default function LoginTerminal() {
             break;
           case "exit":
            window.ipc.invoke('close', 'login');
-
         }
       }
       else {

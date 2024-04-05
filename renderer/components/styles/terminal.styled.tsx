@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
 
   display: flex;
   flex-direction: column-reverse;
-  max-height: calc(100vh - 2rem);
+  max-height: calc(80vh - 120px);
   overflow-y: auto;
 
   margin-left: 1rem;

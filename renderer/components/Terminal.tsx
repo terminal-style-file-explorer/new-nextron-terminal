@@ -216,16 +216,45 @@ export default function HomePage() {
   }, [containerRef]);
 
   return (
-    <Wrapper ref={containerRef} className=''>
-      {/**  <Hint /> */}
-      {hints.length > 1 && (
-        <div>
-          {hints.map(hCmd => (
-            <Hints key={hCmd}>{hCmd}</Hints>
-          ))}
+
+    <div className='border-[20px] border-gray-100 ' style={{ height: '100vh' }} >
+      <div className='w-full h-[80px] flex flex-row'>
+        <div id='system-msg' className='w-[460px] h-full border-[2px] border-blue-100'>系统消息</div>
+        <div id='user-info' className='w-[460px] h-full border-[2px] border-green-100'>用户信息</div>
+        <div id='user-activity' className='w-[460px] h-full border-[2px] border-red-100'>操作手册</div>
+      </div>
+
+      <Wrapper ref={containerRef} className=''>
+        {/**  <Hint /> */}
+
+
+        <div id='history' className=''>
+          {cmdHistory.map((cmdH, index) => {
+            return (
+              <div key={_.uniqueId(`${cmdH}_`)}>
+                <div key={index}>
+                  <div id='terminal-info'>
+                    <User> {userHistory[index]}</User>
+                    <span>@: {cmdH}</span>
+                  </div>
+                  <div id='terminal-output'>
+                    {resultHistory[index]}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
-      )}
-      <Form onSubmit={handleSubmit} className='flex'>
+        <hr />
+        <div className='flex'>
+          <span className=''>Hints:</span>
+          {event.map((e, index) => {
+            return <span key={index}>{e}</span>
+          }
+          )}
+        </div>
+      </Wrapper>
+      <Form onSubmit={handleSubmit} style={{ position: 'fixed', bottom: '60px' }}>
         <label>
           <User>{user.name ? user.name + "@:  " : "user" + "@:   "}</User>
         </label>
@@ -240,33 +269,14 @@ export default function HomePage() {
           ref={inputRef}
         />
       </Form>
-      <div id='history' className=''>
-        {cmdHistory.map((cmdH, index) => {
-          return (
-            <div key={_.uniqueId(`${cmdH}_`)}>
-              <div key={index}>
-                <div id='terminal-info'>
-                  <User> {userHistory[index]}</User>
-                  <span>@: {cmdH}</span>
-                </div>
-                <div id='terminal-output'>
-                  {resultHistory[index]}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <hr />
-      <div className='flex'>
-        <span className=''>Hints:</span>
-        {event.map((e, index) => {
-          return <span key={index}>{e}</span>
-        }
-        )}
-      </div>
-    </Wrapper>
-
+      {hints.length > 1 && (
+        <div className='relative ' style={{ position: 'fixed', bottom: '0', height: '40px' }}>
+          {hints.map(hCmd => (
+            <Hints key={hCmd}>{hCmd}</Hints>
+          ))}
+        </div>
+      )}
+    </div>
 
   )
 }
